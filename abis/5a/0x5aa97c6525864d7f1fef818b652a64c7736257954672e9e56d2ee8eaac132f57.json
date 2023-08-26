@@ -1,0 +1,960 @@
+[
+    {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "AlreadyInitialized",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "EthTransferFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidDuration",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidValue",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NegativeTokenPrice",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RestrictedP2P",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RoundIncomplete",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SelfWager",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TokenNotApproved",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnauthorizedSender",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "Uninitialized",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UserAlreadyRefunded",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WagerAlreadyClosed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WagerAlreadyFilled",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WagerExpired",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WagerIncomplete",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WagerNotFilled",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            },
+            {
+                "indexed": true,
+                "internalType": "address[]",
+                "name": "oracles",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "update",
+                "type": "bool"
+            }
+        ],
+        "name": "PaymentTokensUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "wagerId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "WagerCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "wagerId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userA",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "userB",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "wagerToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "int256",
+                "name": "wagerPrice",
+                "type": "int256"
+            }
+        ],
+        "name": "WagerCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "wagerId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userA",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "userB",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "wagerToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "int256",
+                "name": "wagerPrice",
+                "type": "int256"
+            }
+        ],
+        "name": "WagerFilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "wagerId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "winner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "paymentToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "winningSum",
+                "type": "uint256"
+            }
+        ],
+        "name": "WagerRedeemed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "wagerId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "paymentToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "WagerRefunded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            },
+            {
+                "indexed": true,
+                "internalType": "address[]",
+                "name": "oracles",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "update",
+                "type": "bool"
+            }
+        ],
+        "name": "WagerTokensUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "MIN_FEE_AMOUNT",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MIN_WAGER_AMOUNT",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MIN_WAGER_AMOUNT_FACTOR",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MIN_WAGER_DURATION",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_wagerId",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelWager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_wagerId",
+                "type": "uint256"
+            }
+        ],
+        "name": "checkWinner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_userB",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_wagerToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_paymentToken",
+                "type": "address"
+            },
+            {
+                "internalType": "int256",
+                "name": "_wagerPrice",
+                "type": "int256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amountUserA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amountUserB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_duration",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_above",
+                "type": "bool"
+            }
+        ],
+        "name": "createWager",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "createdTimes",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "endTimes",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_wagerId",
+                "type": "uint256"
+            }
+        ],
+        "name": "fillWager",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAllWagers",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "above",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isFilled",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isClosed",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userA",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "userB",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "wagerToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "paymentToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "wagerPrice",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountUserA",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountUserB",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "duration",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct FixedWager.Wager[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "idCounter",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_feeAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_roundIdFetcher",
+                "type": "address"
+            }
+        ],
+        "name": "init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isInitialized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "oracleMalfunction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            }
+        ],
+        "name": "oracleRecovery",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "oracles",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "paymentTokens",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_wagerId",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "refundUserA",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "refundUserB",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "refundableTimestamp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "refundable",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nonrefundable",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "roundIdFetcher",
+        "outputs": [
+            {
+                "internalType": "contract IRoundIdFetcher",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_paymentTokens",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_oracles",
+                "type": "address[]"
+            },
+            {
+                "internalType": "bool",
+                "name": "_update",
+                "type": "bool"
+            }
+        ],
+        "name": "updatePaymentTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_wagerTokens",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_oracles",
+                "type": "address[]"
+            },
+            {
+                "internalType": "bool",
+                "name": "_update",
+                "type": "bool"
+            }
+        ],
+        "name": "updateWagerTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "wagerTokens",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "wagers",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "above",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isFilled",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isClosed",
+                "type": "bool"
+            },
+            {
+                "internalType": "address",
+                "name": "userA",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "userB",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "wagerToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "paymentToken",
+                "type": "address"
+            },
+            {
+                "internalType": "int256",
+                "name": "wagerPrice",
+                "type": "int256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountUserA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountUserB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "duration",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

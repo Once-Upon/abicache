@@ -1,0 +1,752 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "lenderAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "borrowerAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20NonCompliant",
+                "name": "newPrincipalToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IBasicPriceOracle",
+                "name": "newOracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "newCollateralToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fundingPeriodInDays",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "newPaymentIntervalInSeconds",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "loanAmountInPrincipalTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "originationFeePercent2Decimals",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "newAprWithTwoDecimals",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "initialCollateralRatioWith2Decimals",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "OnBorrowerCommitment",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "numberOfTokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnBorrowerWithdrawal",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "collateralClaimed",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnCollateralClaimed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "prevValue",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnCollateralRatioChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "paymentAmountTokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnInterestsRepayment",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "prevLateInterestFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newLateInterestFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "prevLatePrincipalFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newLatePrincipalFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnLateFeesChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "callbackPeriodInHours",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "gracePeriodInHours",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnLoanCalled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "OnLoanClosed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnLoanFunded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "OnLoanMatured",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "prevAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAddress",
+                "type": "address"
+            }
+        ],
+        "name": "OnPriceOracleChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "paymentAmountTokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnPrincipalRepayment",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "apr",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "borrower",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "borrowerCommitment",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "callbackPeriodInHours",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "gracePeriodInHours",
+                "type": "uint256"
+            }
+        ],
+        "name": "callLoan",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "callbackDeadline",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "lateInterestFeeWithTwoDecimals",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "latePrincipalFeeWithTwoDecimals",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeLateFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "maintenanceCollateralRatioWith2Decimals",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeMaintenanceCollateralRatio",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IBasicPriceOracle",
+                "name": "newOracle",
+                "type": "address"
+            }
+        ],
+        "name": "changeOracle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "claimCollateral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "collateralToken",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "principalPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "principalQty",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateralPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateralDecimals",
+                "type": "uint256"
+            }
+        ],
+        "name": "fromTokenToToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fundLoan",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fundedOn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fundingDeadline",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fundingPeriod",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getDebt",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "interestDebtAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "grossDebtAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "principalDebtAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "interestOwed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "applicableLateFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netDebtAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "daysSinceFunding",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentBillingCycle",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minPaymentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxPaymentAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getDebtBoundaries",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "minPayment",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxPayment",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netDebt",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getEffectiveLoanAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getInitialCollateralAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getMaintenanceCollateralAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getMinInterestAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getNextPaymentDate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "interestsRepaid",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isSecured",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lateInterestFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "latePrincipalFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lender",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "liquidate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "loanState",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paymentIntervalInSeconds",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "priceOracle",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "principalRepaid",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "principalToken",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "repayInterests",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "paymentAmountInTokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "repayPrincipal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

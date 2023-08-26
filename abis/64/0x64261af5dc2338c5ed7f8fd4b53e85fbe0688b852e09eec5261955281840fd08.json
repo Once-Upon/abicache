@@ -1,0 +1,617 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract AccountRegistry",
+                "name": "_accounts",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidNodeCreate",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotAuthorizedForNode",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            }
+        ],
+        "name": "NodeBroadcast",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isAuthorized",
+                "type": "bool"
+            }
+        ],
+        "name": "NodeControllerSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint16",
+                "name": "nodeType",
+                "type": "uint16"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "owner",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "parent",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "groupNode",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "metadata",
+                "type": "string"
+            }
+        ],
+        "name": "NodeCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "groupNode",
+                "type": "uint64"
+            }
+        ],
+        "name": "NodeGroupNodeSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "owner",
+                "type": "uint64"
+            }
+        ],
+        "name": "NodeOwnerSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "pendingOwner",
+                "type": "uint64"
+            }
+        ],
+        "name": "NodeOwnerTransferPending",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint64",
+                "name": "parent",
+                "type": "uint64"
+            }
+        ],
+        "name": "NodeParentSet",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "accounts",
+        "outputs": [
+            {
+                "internalType": "contract AccountRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            }
+        ],
+        "name": "broadcast",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "topic",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            }
+        ],
+        "name": "broadcastAndStore",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "name": "completeNodeOwnerTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "controllers",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "nodeType",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint64",
+                "name": "owner",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "parent",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "groupNode",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address[]",
+                "name": "initialControllers",
+                "type": "address[]"
+            },
+            {
+                "internalType": "string",
+                "name": "metadata",
+                "type": "string"
+            }
+        ],
+        "name": "createNode",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "name": "groupNodeOf",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "node",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "account",
+                "type": "uint64"
+            }
+        ],
+        "name": "isAuthorizedAccountForNode",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isAuthorized",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "node",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address",
+                "name": "subject",
+                "type": "address"
+            }
+        ],
+        "name": "isAuthorizedAddressForNode",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isAuthorized",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            },
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "name": "messageStorage",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "name": "nodes",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "nodeType",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint64",
+                "name": "owner",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "parent",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "groupNode",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "name": "parentOf",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "name": "pendingNodeOwnerTransfers",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            }
+        ],
+        "name": "removeNodeOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "node",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isAuthorized",
+                "type": "bool"
+            }
+        ],
+        "name": "setController",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "groupNode",
+                "type": "uint64"
+            }
+        ],
+        "name": "setNodeGroupNode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "parent",
+                "type": "uint64"
+            }
+        ],
+        "name": "setParentNode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "id",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "newOwner",
+                "type": "uint64"
+            }
+        ],
+        "name": "startNodeOwnerTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalNodeCount",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

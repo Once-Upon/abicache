@@ -1,0 +1,633 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "eps",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkBadRateSyToToken",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "eps",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkBadRateTokenToSy",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualSyOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkInSufficientSyOut",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkInSufficientTokenOut",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "currentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkInsufficientSyForTrade",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkInsufficientSyReceived",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "currentAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "BulkInsufficientTokenForTrade",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BulkNotMaintainer",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newFeeRate",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldFeeRate",
+                "type": "uint256"
+            }
+        ],
+        "name": "FeeRateUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newRateTokenToSy",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newRateSyToToken",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldRateTokenToSy",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldRateSyToToken",
+                "type": "uint256"
+            }
+        ],
+        "name": "RateUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyRedeem",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenFromSy",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newTokenProp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldTokenProp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ReBalanceSyToToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenDeposit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyFromToken",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newTokenProp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldTokenProp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ReBalanceTokenToSy",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalToken",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalSy",
+                "type": "uint256"
+            }
+        ],
+        "name": "ReserveUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapExactSyForToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapExactTokenForSy",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "SY",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_storage",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "rateTokenToSy",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "rateSyToToken",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "totalSy",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "totalToken",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "decreaseReserve",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "factory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeRate",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "increaseReserve",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_SY",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_factory",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "targetProp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxDiff",
+                "type": "uint256"
+            }
+        ],
+        "name": "reBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "readState",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "rateTokenToSy",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rateSyToToken",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalToken",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalSy",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "feeRate",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BulkSellerState",
+                "name": "state",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redeemRewards",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "newFeeRate",
+                "type": "uint64"
+            }
+        ],
+        "name": "setFeeRate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newRateSyToToken",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "newRateTokenToSy",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxDiff",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "skim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "exactSyIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "swapFromInternalBalance",
+                "type": "bool"
+            }
+        ],
+        "name": "swapExactSyForToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netTokenIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "swapExactTokenForSy",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "token",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

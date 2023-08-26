@@ -1,0 +1,863 @@
+[
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumSaleTimeout",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumCooldownDuration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "contract RedeemableERC20Factory",
+                        "name": "redeemableERC20Factory",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct SaleConstructorConfig",
+                "name": "config_",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_size",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_start",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_end",
+                "type": "uint256"
+            }
+        ],
+        "name": "InvalidCodeAtRange",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WriteError",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "feeRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minimumUnits",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "desiredUnits",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct BuyConfig",
+                "name": "config",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feeRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "units",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Receipt",
+                "name": "receipt",
+                "type": "tuple"
+            }
+        ],
+        "name": "Buy",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumSaleTimeout",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumCooldownDuration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "contract RedeemableERC20Factory",
+                        "name": "redeemableERC20Factory",
+                        "type": "address"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct SaleConstructorConfig",
+                "name": "config",
+                "type": "tuple"
+            }
+        ],
+        "name": "Construct",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "cooldownDuration",
+                "type": "uint256"
+            }
+        ],
+        "name": "CooldownInitialize",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "cooldown",
+                "type": "uint256"
+            }
+        ],
+        "name": "CooldownTriggered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum SaleStatus",
+                "name": "saleStatus",
+                "type": "uint8"
+            }
+        ],
+        "name": "End",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "canStartStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "canEndStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "calculatePriceStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "reserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "saleTimeout",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cooldownDuration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minimumRaise",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "dustSize",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct SaleConfig",
+                "name": "config",
+                "type": "tuple"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "Initialize",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feeRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "units",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Receipt",
+                "name": "receipt",
+                "type": "tuple"
+            }
+        ],
+        "name": "Refund",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "pointer",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "stackIndex",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "stack",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "sources",
+                        "type": "bytes[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "constants",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "arguments",
+                        "type": "uint256[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct State",
+                "name": "state",
+                "type": "tuple"
+            }
+        ],
+        "name": "Snapshot",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "Start",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "Timeout",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "feeRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minimumUnits",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "desiredUnits",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maximumPrice",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BuyConfig",
+                "name": "config_",
+                "type": "tuple"
+            }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "units_",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculatePrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "canEnd",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "canStart",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "recipient_",
+                "type": "address"
+            }
+        ],
+        "name": "claimFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "end",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "canStartStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "canEndStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes[]",
+                                "name": "sources",
+                                "type": "bytes[]"
+                            },
+                            {
+                                "internalType": "uint256[]",
+                                "name": "constants",
+                                "type": "uint256[]"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "stackLength",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "argumentsLength",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StateConfig",
+                        "name": "calculatePriceStateConfig",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "reserve",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "saleTimeout",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "cooldownDuration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minimumRaise",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "dustSize",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct SaleConfig",
+                "name": "config_",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "string",
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "symbol",
+                                "type": "string"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "distributor",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "initialSupply",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct ERC20Config",
+                        "name": "erc20Config",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tier",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minimumTier",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "distributionEndForwardingAddress",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct SaleRedeemableERC20Config",
+                "name": "saleRedeemableERC20Config_",
+                "type": "tuple"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "feeRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "fee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "units",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Receipt",
+                "name": "receipt_",
+                "type": "tuple"
+            }
+        ],
+        "name": "refund",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reserve",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "saleStatus",
+        "outputs": [
+            {
+                "internalType": "enum SaleStatus",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "start",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "timeout",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "token",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

@@ -1,0 +1,765 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IContractRegistry",
+                "name": "_contractRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IStaking",
+                "name": "_staking",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ISetToken",
+                "name": "_setToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_threeCrv",
+                "type": "address"
+            },
+            {
+                "internalType": "contract Curve3Pool",
+                "name": "_threePool",
+                "type": "address"
+            },
+            {
+                "internalType": "contract BasicIssuanceModule",
+                "name": "_basicIssuanceModule",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_yTokenAddresses",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract CurveMetapool",
+                        "name": "curveMetaPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "crvLPToken",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct ButterWhaleProcessing.CurvePoolTokenPair[]",
+                "name": "_curvePoolTokenPairs",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "yTokenAddresses",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract CurveMetapool",
+                        "name": "curveMetaPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "crvLPToken",
+                        "type": "address"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct ButterWhaleProcessing.CurvePoolTokenPair[]",
+                "name": "curveTokenPairs",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "CurveTokenPairsUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "butterAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Minted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimableTokenBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "Redeemed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newRedemptionFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "name": "RedemptionFeeUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "beforeAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "afterAddress",
+                "type": "address"
+            }
+        ],
+        "name": "StakingUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sweetheart",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSweeheart",
+                "type": "bool"
+            }
+        ],
+        "name": "SweetheartUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "mintAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "butterAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "ZapMinted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "redeemAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "claimableTokenBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "ZapRedeemed",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "claimRedemptionFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "contractName",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "contractRegistry",
+        "outputs": [
+            {
+                "internalType": "contract IContractRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "curvePoolTokenPairs",
+        "outputs": [
+            {
+                "internalType": "contract CurveMetapool",
+                "name": "curveMetaPool",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "crvLPToken",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeRecipient",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_valueOfComponents",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMinAmount3CrvFromRedeem",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_valueOfBatch",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_valueOfComponentsPerUnit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            }
+        ],
+        "name": "getMinAmountToMint",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_stake",
+                "type": "bool"
+            }
+        ],
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_yTokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "recoverLeftover",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redemptionFeeRate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "redemptionFees",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "setApprovals",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "setBasicIssuanceModule",
+        "outputs": [
+            {
+                "internalType": "contract BasicIssuanceModule",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_yTokenAddresses",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract CurveMetapool",
+                        "name": "curveMetaPool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20",
+                        "name": "crvLPToken",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct ButterWhaleProcessing.CurvePoolTokenPair[]",
+                "name": "_curvePoolTokenPairs",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setCurvePoolTokenPairs",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_feeRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "setRedemptionFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_staking",
+                "type": "address"
+            }
+        ],
+        "name": "setStaking",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "setToken",
+        "outputs": [
+            {
+                "internalType": "contract ISetToken",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "staking",
+        "outputs": [
+            {
+                "internalType": "contract IStaking",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "sweethearts",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "threeCrv",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_sweetheart",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_enabled",
+                "type": "bool"
+            }
+        ],
+        "name": "updateSweetheart",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_units",
+                "type": "uint256"
+            }
+        ],
+        "name": "valueOf3Crv",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_tokenAddresses",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_quantities",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "valueOfComponents",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[3]",
+                "name": "_amounts",
+                "type": "uint256[3]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_min_3crv_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_stake",
+                "type": "bool"
+            }
+        ],
+        "name": "zapMint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_stableCoinIndex",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_min_stable_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_slippage",
+                "type": "uint256"
+            }
+        ],
+        "name": "zapRedeem",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

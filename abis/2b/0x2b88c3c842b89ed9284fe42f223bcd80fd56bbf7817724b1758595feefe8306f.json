@@ -1,0 +1,672 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "minBetAmount_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "platformFee_",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bettingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sideId",
+                "type": "uint256"
+            }
+        ],
+        "name": "ChooseWinner",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "player",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bettingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sideId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "betAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "PlaceBet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "betConditionStr",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "betConditionImg",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "string[]",
+                "name": "betSides",
+                "type": "string[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "startTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "endTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "StartNewBet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "bettingId",
+                "type": "uint256"
+            }
+        ],
+        "name": "StopBet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newMinBetAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpdateMinBetAmount",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newAsset",
+                "type": "address"
+            }
+        ],
+        "name": "UpdatePlatformAsset",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "newFee",
+                "type": "uint16"
+            }
+        ],
+        "name": "UpdatePlatfromFee",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "sideId_",
+                "type": "uint256"
+            }
+        ],
+        "name": "chooseWinner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAllBettingList",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "bettingId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "startTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "endTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "winBetSideId",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "finished",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "betConditionStr",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "betConditionImg",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct IBettingPlatform.BettingInfo[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            }
+        ],
+        "name": "getBetAmountBySide",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "sideId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "sideDescription",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "totalBetAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IBettingPlatform.BetAmountInfo[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getHoldingTokens",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPlacedBettingList",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "bettingId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "startTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "endTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "betSideId",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "string",
+                                "name": "betSide",
+                                "type": "string"
+                            }
+                        ],
+                        "internalType": "struct IBettingPlatform.IBetSide[]",
+                        "name": "betSides",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "betConditionStr",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "betConditionImg",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct IBettingPlatform.IBettingPool[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minBetAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "sideId_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "holdingTokenAddr_",
+                "type": "address"
+            }
+        ],
+        "name": "placeBet",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "placedBettingCnt",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "platformFee",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "playerInfos",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "holdingToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "betAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "betSideId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "betConditionStr_",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "betConditionImg_",
+                "type": "string"
+            },
+            {
+                "internalType": "string[]",
+                "name": "betSides_",
+                "type": "string[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "startTime_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "endTime_",
+                "type": "uint256"
+            }
+        ],
+        "name": "startNewBet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            }
+        ],
+        "name": "stopBet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "thresholdTokenInfos",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "minRakeDiscount",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minHoldCnt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "maxRakeDiscount",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxHoldCnt",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "newBetCondition_",
+                "type": "string"
+            }
+        ],
+        "name": "updateBetCondition",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "bettingId_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "newBetConditionImg_",
+                "type": "string"
+            }
+        ],
+        "name": "updateBetConditionImg",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenAddr_",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint16",
+                        "name": "minRakeDiscount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minHoldCnt",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "maxRakeDiscount",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxHoldCnt",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IBetAdminActions.DiscountTokenInfo",
+                "name": "discountTokenInfo_",
+                "type": "tuple"
+            }
+        ],
+        "name": "updateHoldingToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinAmount_",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateMinBetAmount",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "newFee_",
+                "type": "uint16"
+            }
+        ],
+        "name": "updatePlatformFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawAsset",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

@@ -1,0 +1,764 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_ownerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_amoMinterAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_yieldLadle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_yieldFraxJoin",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_frax",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "amoMinterAddress",
+                "type": "address"
+            }
+        ],
+        "name": "AMOMinterSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "ladleAddress",
+                "type": "address"
+            }
+        ],
+        "name": "LadleSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxUsed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "poolMinted",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidityAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "poolBurned",
+                "type": "uint256"
+            }
+        ],
+        "name": "LiquidityRemoved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnerChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnerNominated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxUsed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "RatesDecreased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxUsed",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "RatesIncreased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            }
+        ],
+        "name": "SeriesAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            }
+        ],
+        "name": "SeriesRemoved",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "FRAX_ILK_ID",
+        "outputs": [
+            {
+                "internalType": "bytes6",
+                "name": "",
+                "type": "bytes6"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fraxAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fyFraxAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minRatio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxRatio",
+                "type": "uint256"
+            }
+        ],
+        "name": "addLiquidityToAMM",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxUsed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "poolMinted",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "contract IFYToken",
+                "name": "fyToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "addSeries",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fyFraxAmount",
+                "type": "uint128"
+            }
+        ],
+        "name": "burnFyFrax",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fyFraxStored",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cauldron",
+        "outputs": [
+            {
+                "internalType": "contract ICauldron",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "currentAMOmintedFRAX",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "currentAMOmintedFyFRAX",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "currentFrax",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "custodianAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fraxAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "minFyFraxReceived",
+                "type": "uint128"
+            }
+        ],
+        "name": "decreaseRates",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyFraxStored",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "dollarBalances",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "valueAsFrax",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "valueAsCollateral",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "execute",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fraxJoin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyFraxAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "fraxValue",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fraxAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "minFraxReceived",
+                "type": "uint128"
+            }
+        ],
+        "name": "increaseRates",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ladle",
+        "outputs": [
+            {
+                "internalType": "contract ILadle",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint128",
+                "name": "fraxAmount",
+                "type": "uint128"
+            }
+        ],
+        "name": "mintFyFrax",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "fyFraxMinted",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "nominateNewOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "nominatedOwner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint256",
+                "name": "poolAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minRatio",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxRatio",
+                "type": "uint256"
+            }
+        ],
+        "name": "removeLiquidityFromAMM",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fraxReceived",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyFraxStored",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint256",
+                "name": "seriesIndex",
+                "type": "uint256"
+            }
+        ],
+        "name": "removeSeries",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "",
+                "type": "bytes6"
+            }
+        ],
+        "name": "series",
+        "outputs": [
+            {
+                "internalType": "bytes12",
+                "name": "vaultId",
+                "type": "bytes12"
+            },
+            {
+                "internalType": "contract IFYToken",
+                "name": "fyToken",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint96",
+                "name": "maturity",
+                "type": "uint96"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "seriesIterator",
+        "outputs": [
+            {
+                "internalType": "bytes6[]",
+                "name": "seriesIterator_",
+                "type": "bytes6[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IFraxAMOMinter",
+                "name": "_amoMinter",
+                "type": "address"
+            }
+        ],
+        "name": "setAMOMinter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ILadle",
+                "name": "_ladle",
+                "type": "address"
+            }
+        ],
+        "name": "setLadle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes6",
+                "name": "seriesId",
+                "type": "bytes6"
+            }
+        ],
+        "name": "showAllocations",
+        "outputs": [
+            {
+                "internalType": "uint256[6]",
+                "name": "",
+                "type": "uint256[6]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "timelockAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

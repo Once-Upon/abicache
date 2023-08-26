@@ -1,0 +1,1168 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_feeAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_paymentAdmin",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_quoteTokenAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+            }
+        ],
+        "name": "AutopaymentChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            }
+        ],
+        "name": "BackupWalletChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "payer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountInPaymentToken",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newexpirationTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "withPenalty",
+                "type": "bool"
+            }
+        ],
+        "name": "BillPayment",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "priceInPaymentToken",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "autopayment",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "subscriptionID",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "expirationTime",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "voteQuorum",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rcCount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "backupWallet",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "validators",
+                        "type": "address[]"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct RC.Insurance",
+                "name": "userInsurance",
+                "type": "tuple"
+            }
+        ],
+        "name": "CreateInsurance",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "backupWallet",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "recoveryTokensCount",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsuranceEvent",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            }
+        ],
+        "name": "ProposalConfirmed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "proposer",
+                "type": "address"
+            }
+        ],
+        "name": "ProposalCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            }
+        ],
+        "name": "ProposalExecuted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "subscriptionID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+            }
+        ],
+        "name": "SubscriptionStateChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "active",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "validityPeriod",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "priceInQuoteToken",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "paymentToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "exchangePair",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "recoveryTokenLimit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "penaltyBP",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "erc20FeeBP",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "erc20PenaltyBP",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct RC.Subscription",
+                "name": "_subscription",
+                "type": "tuple"
+            }
+        ],
+        "name": "SubscriptionsAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newSubscriptionID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "expirationTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "priceInPaymentToken",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpgradeInsurancePlan",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newVoteQuorum",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "newValidators",
+                "type": "address[]"
+            }
+        ],
+        "name": "ValidatorsChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "validator",
+                "type": "address"
+            }
+        ],
+        "name": "Vote",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BASE_POINT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "EXECUTION_LOCK_PERIOD",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "FREEMIUM_ID",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MAX_ERC20_FEE_BP",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MAX_ERC20_PENALTY_BP",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MAX_FEE_PENALTY_BP",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MAX_VALIDATORS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "TRIAL_ID",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "VOTING_PERIOD",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "active",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "validityPeriod",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "priceInQuoteToken",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "paymentToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "exchangePair",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "recoveryTokenLimit",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "penaltyBP",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "erc20FeeBP",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "erc20PenaltyBP",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct RC.Subscription",
+                "name": "_subscription",
+                "type": "tuple"
+            }
+        ],
+        "name": "addSubscription",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "autoPayment",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "billPayment",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "confirmProposal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_backupWallet",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_validators",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_voteQuorum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_subscriptionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_autopayment",
+                "type": "bool"
+            }
+        ],
+        "name": "createInsurance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "executeProposal",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "feeAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_pair",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_priceInQuoteToken",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPriceInPaymentToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "getProposalState",
+        "outputs": [
+            {
+                "internalType": "enum RC.ProposalState",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "getValidators",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "getVoters",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            }
+        ],
+        "name": "getVotersCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "voiceCount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20[]",
+                "name": "erc20Tokens",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "nftAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "ids",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct RC.NFTinfo[]",
+                "name": "erc721Tokens",
+                "type": "tuple[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "nftAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "ids",
+                        "type": "uint256[]"
+                    }
+                ],
+                "internalType": "struct RC.NFTinfo[]",
+                "name": "erc1155Tokens",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "insuranceEvent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "insurances",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "autopayment",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "subscriptionID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expirationTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "voteQuorum",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "rcCount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "backupWallet",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paymentAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "proposals",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "executed",
+                "type": "bool"
+            },
+            {
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "executionTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "votersBits",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "insuranceOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "newBackupWallet",
+                "type": "address"
+            }
+        ],
+        "name": "proposeChangeBackupWallet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "quoteTokenAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_autopayment",
+                "type": "bool"
+            }
+        ],
+        "name": "setAutopayment",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_backupWallet",
+                "type": "address"
+            }
+        ],
+        "name": "setBackupWallet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_feeAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setFeeAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_paymentAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "setPaymentAdminAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_validators",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_voteQuorum",
+                "type": "uint256"
+            }
+        ],
+        "name": "setValidators",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_sId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_active",
+                "type": "bool"
+            }
+        ],
+        "name": "subscriptionStateChange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "subscriptions",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "active",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "validityPeriod",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "priceInQuoteToken",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "paymentToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "exchangePair",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "recoveryTokenLimit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "penaltyBP",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc20FeeBP",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "erc20PenaltyBP",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_subscriptionID",
+                "type": "uint256"
+            }
+        ],
+        "name": "upgradeInsurancePlan",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

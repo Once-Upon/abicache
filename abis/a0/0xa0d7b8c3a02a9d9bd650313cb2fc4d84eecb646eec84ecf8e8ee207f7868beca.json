@@ -1,0 +1,825 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_coinAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "AddedManager",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "quantity",
+                "type": "uint256"
+            }
+        ],
+        "name": "EmergencyWithdrawToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "RemovedManager",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "TotalWithdrawn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "restAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "UserVestingCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "cancelIsRestricted",
+                "type": "bool"
+            }
+        ],
+        "name": "UserVestingCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "tgePercentage",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "tge",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "cliffDuration",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "vestingDuration",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "vestingInterval",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "VestingPoolCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Withdrawn",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_manager",
+                "type": "address"
+            }
+        ],
+        "name": "addManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "indexInUserVestingIds",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelUserVesting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "coin",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "coinAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "cancelIsRestricted",
+                "type": "bool"
+            }
+        ],
+        "name": "createUserVesting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "receiverList",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "totalAmountList",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "vestingPoolIdList",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bool[]",
+                "name": "cancelIsRestrictedList",
+                "type": "bool[]"
+            }
+        ],
+        "name": "createUserVestings",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "tgePercentage",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint32",
+                "name": "tge",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "cliffDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingInterval",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "createVestingPool",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16[]",
+                "name": "tgePercentageList",
+                "type": "uint16[]"
+            },
+            {
+                "internalType": "uint32[]",
+                "name": "tgeList",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint32[]",
+                "name": "cliffDurationList",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint32[]",
+                "name": "vestingDurationList",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint32[]",
+                "name": "vestingIntervalList",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "totalAmountList",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "createVestingPools",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserVesting",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawnAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "avaliable",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "cancelIsRestricted",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getVestingParams",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "tgePercentage",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint32",
+                "name": "tge",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "cliffDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingInterval",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getVestingPool",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "tgePercentage",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint32",
+                "name": "tge",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "cliffDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingDuration",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "vestingInterval",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "allocatedAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "name": "getWalletInfo",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "alreadyWithdrawn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "availableToWithdraw",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_manager",
+                "type": "address"
+            }
+        ],
+        "name": "removeManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "togglePause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalUserVestingsCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalVestingPoolsCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "userVestingIds",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "userVestings",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawnAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "vestingPoolId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "cancelIsRestricted",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "userVestingsIds",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            }
+        ],
+        "name": "userVestingsLength",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "length",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "vestingPools",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint16",
+                        "name": "tgePercentage",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "tge",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "cliffDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "vestingDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "vestingInterval",
+                        "type": "uint32"
+                    }
+                ],
+                "internalType": "struct PercentageVestingLibrary.Data",
+                "name": "data",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "allocatedAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "userVestingId",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

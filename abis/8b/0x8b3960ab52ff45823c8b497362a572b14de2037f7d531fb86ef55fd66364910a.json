@@ -1,0 +1,1004 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_limitOrderExecutor",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_weth",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_usdc",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "AmountOutRequiredIsZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "DuplicateOrderIdsInOrderGroup",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ETHTransferFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ExecutorNotCheckedIn",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fillAmountSpecified",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountInRemaining",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "FillAmountSpecifiedGreaterThanAmountRemaining",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "expectedToken",
+                "type": "address"
+            }
+        ],
+        "name": "IncongruentInputTokenInOrderGroup",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "approvedQuantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "approvedQuantityNeeded",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientAllowanceForOrderPlacement",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "approvedQuantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "approvedQuantityNeeded",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientAllowanceForOrderUpdate",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "msgValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientExecutionCredit",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientMsgValue",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientOrderInputValue",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "balanceNeeded",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientWalletBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidInputTokenForOrderPlacement",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotOrderOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotSandboxRouter",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotTempOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "msgValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "cumulativeExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "MsgValueIsNotCumulativeExecutionCredit",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OrderDoesNotExist",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OrderNotEligibleForRefresh",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "Reentrancy",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOutRequired",
+                "type": "uint256"
+            }
+        ],
+        "name": "SandboxAmountOutRequiredNotSatisfied",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountFilled",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fillAmountRequired",
+                "type": "uint256"
+            }
+        ],
+        "name": "SandboxFillAmountNotSatisfied",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "executionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawAmountExceedsExecutionCredit",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newMinExecutionCredit",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldMinExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "MinExecutionCreditUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "OrderCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "OrderExecutionCreditUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "OrderFilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint128",
+                "name": "amountInRemaining",
+                "type": "uint128"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint128",
+                "name": "amountOutRemaining",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "executionCreditRemaining",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "feeRemaining",
+                "type": "uint128"
+            }
+        ],
+        "name": "OrderPartialFilled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "OrderPlaced",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "lastRefreshTimestamp",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "expirationTimestamp",
+                "type": "uint32"
+            }
+        ],
+        "name": "OrderRefreshed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "OrderUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "CHECK_IN_INTERVAL",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SANDBOX_LIMIT_ORDER_ROUTER",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "addressToAllOrderIds",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "addressToOrderIds",
+        "outputs": [
+            {
+                "internalType": "enum SandboxLimitOrderBook.OrderType",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "cancelOrder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "cancelOrders",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "confirmTransferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            }
+        ],
+        "name": "decreaseExecutionCredit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32[][]",
+                        "name": "orderIdBundles",
+                        "type": "bytes32[][]"
+                    },
+                    {
+                        "internalType": "uint128[]",
+                        "name": "fillAmounts",
+                        "type": "uint128[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "transferAddresses",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "target",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "callData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct SandboxLimitOrderRouter.Call[]",
+                        "name": "calls",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SandboxLimitOrderRouter.SandboxMulticall",
+                "name": "sandboxMulticall",
+                "type": "tuple"
+            }
+        ],
+        "name": "executeOrdersViaSandboxMulticall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "orderOwner",
+                "type": "address"
+            }
+        ],
+        "name": "getAllOrderIdsLength",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "orderOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "enum SandboxLimitOrderBook.OrderType",
+                "name": "targetOrderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "orderOffset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "length",
+                "type": "uint256"
+            }
+        ],
+        "name": "getOrderIds",
+        "outputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "",
+                "type": "bytes32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getSandboxLimitOrderById",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "lastRefreshTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expirationTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "fillPercent",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "feeRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountInRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountOutRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "executionCreditRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "orderId",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct SandboxLimitOrderBook.SandboxLimitOrder",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSandboxLimitOrderRouterAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "getTotalOrdersValue",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "totalOrderValue",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "increaseExecutionCredit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "lastRefreshTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expirationTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "fillPercent",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "feeRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountInRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountOutRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "executionCreditRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "orderId",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct SandboxLimitOrderBook.SandboxLimitOrder[]",
+                "name": "orderGroup",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "placeSandboxLimitOrder",
+        "outputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "",
+                "type": "bytes32[]"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "orderIds",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "refreshOrder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMinExecutionCredit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "totalOrdersPerAddress",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "totalOrdersQuantity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amountInRemaining",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amountOutRemaining",
+                "type": "uint128"
+            }
+        ],
+        "name": "updateSandboxLimitOrder",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "orderId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "validateAndCancelOrder",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

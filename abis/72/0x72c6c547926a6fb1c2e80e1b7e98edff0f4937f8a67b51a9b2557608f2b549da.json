@@ -1,0 +1,984 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aavePoolAddressesProvider_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "instaList_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "id",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "nonce",
+                "type": "uint32"
+            }
+        ],
+        "name": "LogCancelledAutomation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldOnwer",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOnwer",
+                "type": "address"
+            }
+        ],
+        "name": "LogChangedOwner",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "id",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "nonce",
+                "type": "uint32"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "collateralToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmountWithTotalFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "buyToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "sellToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "sellAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "unitAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "callData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct Structs.Swap",
+                        "name": "swap",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "route",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rateMode",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Structs.ExecutionParams",
+                "name": "params",
+                "type": "tuple"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isSafe",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "automationFee",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "metadata",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "finalHf",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "initialHf",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogExecutedAutomation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "id",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "nonce",
+                "type": "uint32"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "collateralToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmountWithTotalFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "buyToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "sellToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "sellAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "unitAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "callData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct Structs.Swap",
+                        "name": "swap",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "route",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rateMode",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Structs.ExecutionParams",
+                "name": "params",
+                "type": "tuple"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "metadata",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "initialHf",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogExecutionFailedAutomation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "tokens",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "amount",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "LogFeeTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "executors",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool[]",
+                "name": "status",
+                "type": "bool[]"
+            }
+        ],
+        "name": "LogFlippedExecutors",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "id",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "safeHF",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "thresholdHF",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "currentHf",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogSubmittedAutomation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "actionId",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "metadata",
+                "type": "bytes"
+            }
+        ],
+        "name": "LogSystemCall",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "id",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "nonce",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "errorCode",
+                "type": "uint8"
+            }
+        ],
+        "name": "LogSystemCancelledAutomation",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "oldAutomationFee",
+                "type": "uint16"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "newAutomationFee",
+                "type": "uint16"
+            }
+        ],
+        "name": "LogUpdatedAutomationFee",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "oldBufferHf",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "newBufferHf",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogUpdatedBufferHf",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "oldMinHf",
+                "type": "uint128"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint128",
+                "name": "newMinHf",
+                "type": "uint128"
+            }
+        ],
+        "name": "LogUpdatedMinHf",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "_automationFee",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_bufferHf",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "_executors",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_id",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_minimumThresholdHf",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_status",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "_userAutomationConfigs",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "enum Structs.Status",
+                "name": "status",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint32",
+                "name": "nonce",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint128",
+                "name": "safeHF",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "thresholdHF",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "_userLatestId",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelAutomationRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner_",
+                "type": "address"
+            }
+        ],
+        "name": "changeOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "id_",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "nonce_",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "onCastRevert_",
+                "type": "bool"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "collateralToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralAmountWithTotalFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "buyToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "sellToken",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "sellAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "unitAmt",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "callData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct Structs.Swap",
+                        "name": "swap",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "route",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rateMode",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Structs.ExecutionParams",
+                "name": "params_",
+                "type": "tuple"
+            },
+            {
+                "internalType": "bytes",
+                "name": "metadata_",
+                "type": "bytes"
+            }
+        ],
+        "name": "executeAutomation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "executor_",
+                "type": "address[]"
+            },
+            {
+                "internalType": "bool[]",
+                "name": "status_",
+                "type": "bool[]"
+            }
+        ],
+        "name": "flipExecutor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user_",
+                "type": "address"
+            }
+        ],
+        "name": "getHealthFactor",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "healthFactor_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint16",
+                "name": "automationFee_",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint128",
+                "name": "minimumThresholdHf_",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "bufferHf_",
+                "type": "uint128"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "safeHealthFactor_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "thresholdHealthFactor_",
+                "type": "uint256"
+            }
+        ],
+        "name": "submitAutomationRequest",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "safeHealthFactor_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "thresholdHealthFactor_",
+                "type": "uint256"
+            }
+        ],
+        "name": "submitAutomationRequestMock",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "actionId_",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes",
+                "name": "metadata_",
+                "type": "bytes"
+            }
+        ],
+        "name": "systemCall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "users_",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint32[]",
+                "name": "ids_",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "errorCodes_",
+                "type": "uint8[]"
+            }
+        ],
+        "name": "systemCancel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "tokens_",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address",
+                "name": "recipient_",
+                "type": "address"
+            }
+        ],
+        "name": "transferFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "newAutomationFee_",
+                "type": "uint16"
+            }
+        ],
+        "name": "updateAutomationFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "newBufferHf_",
+                "type": "uint128"
+            }
+        ],
+        "name": "updateBufferHf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "newMinimumThresholdHf_",
+                "type": "uint128"
+            }
+        ],
+        "name": "updateMinimunHf",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

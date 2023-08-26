@@ -1,0 +1,790 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_supportedStables",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "_platformRequiredTokensToBuy",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC721",
+                "name": "nftContract",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "stable",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            }
+        ],
+        "name": "NFTSold",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC721",
+                "name": "nftContract",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "canceller",
+                "type": "address"
+            }
+        ],
+        "name": "OrderCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC721",
+                "name": "nftContract",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "seller",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "stable",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            }
+        ],
+        "name": "OrderCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC721",
+                "name": "nft",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "items",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "OwnerRequiredTokenToBuySet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "items",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "PlatformRequiredTokenToBuySet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IERC721",
+                "name": "nft",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "treasury",
+                "type": "address"
+            }
+        ],
+        "name": "ProjectTreasurySet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "SupportedStableAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "SupportedStableRemoved",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_supportedStables",
+                "type": "address[]"
+            }
+        ],
+        "name": "addSupportedStables",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "cancelSell",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_supportedStable",
+                "type": "address"
+            }
+        ],
+        "name": "deleteSupportedStable",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            }
+        ],
+        "name": "getOwnerRequiredTokensToBuy",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPlatformRequiredTokensToBuy",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSupportedStable",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSupportedStables",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSupportedStablesCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC721",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "ownerRequiredTokensToBuy",
+        "outputs": [
+            {
+                "internalType": "contract IWithBalance",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint96",
+                "name": "amount",
+                "type": "uint96"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "platformRequiredTokensToBuy",
+        "outputs": [
+            {
+                "internalType": "contract IWithBalance",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint96",
+                "name": "amount",
+                "type": "uint96"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC721",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "projectTreasury",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stable",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct NFTShop.ItemForSale[]",
+                "name": "_items",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "sell",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "_ownerRequiredTokensToBuy",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setOwnerRequiredTokensToBuy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IWithBalance",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "amount",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct NFTShop.RequiredToken[]",
+                "name": "_platformRequiredTokensToBuy",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "setPlatformRequiredTokensToBuy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "setProjectTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenForSale",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stable",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct NFTShop.Order",
+                "name": "info",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            }
+        ],
+        "name": "tokensForSale",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "price",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stable",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct NFTShop.Order[]",
+                "name": "_infos",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract INFTFull",
+                "name": "_nftContract",
+                "type": "address"
+            }
+        ],
+        "name": "tokensForSaleCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC721",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokensForSaleInfo",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "stable",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

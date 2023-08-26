@@ -1,0 +1,887 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_optionToken",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "GP_AssetAlreadyRegistered",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_BadOracle",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_BadStrikes",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_EngineAlreadyRegistered",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_InvalidExpiry",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_NotExpired",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_Not_Authorized_Engine",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_OracleAlreadyRegistered",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_PriceNotFinalized",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GP_WrongArgumentLength",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousAdmin",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "asset",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "name": "AssetRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "beacon",
+                "type": "address"
+            }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "engine",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "name": "MarginEngineRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountSettled",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "payout",
+                "type": "uint256"
+            }
+        ],
+        "name": "OptionSettled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oracle",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "name": "OracleRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "assetIds",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "name": "assets",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "decimals",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_amounts",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "batchGetPayouts",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "collateralId",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint80",
+                        "name": "amount",
+                        "type": "uint80"
+                    }
+                ],
+                "internalType": "struct Balance[]",
+                "name": "payouts",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_amounts",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "batchSettleOptions",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint8",
+                        "name": "collateralId",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint80",
+                        "name": "amount",
+                        "type": "uint80"
+                    }
+                ],
+                "internalType": "struct Balance[]",
+                "name": "payouts",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_engine",
+                "type": "address"
+            }
+        ],
+        "name": "checkEngineAccess",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_engine",
+                "type": "address"
+            }
+        ],
+        "name": "checkEngineAccessAndTokenId",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "engineIds",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "name": "engines",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint40",
+                "name": "_productId",
+                "type": "uint40"
+            }
+        ],
+        "name": "getDetailFromProductId",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "oracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "engine",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "underlyingDecimals",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "strike",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "strikeDecimals",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "collateral",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "collateralDecimals",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getDetailFromTokenId",
+        "outputs": [
+            {
+                "internalType": "enum TokenType",
+                "name": "tokenType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint40",
+                "name": "productId",
+                "type": "uint40"
+            },
+            {
+                "internalType": "uint64",
+                "name": "expiry",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "longStrike",
+                "type": "uint64"
+            },
+            {
+                "internalType": "uint64",
+                "name": "shortStrike",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint64",
+                "name": "_amount",
+                "type": "uint64"
+            }
+        ],
+        "name": "getPayout",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "engine",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "collateral",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "payout",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_oracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_engine",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_underlying",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_strike",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_collateral",
+                "type": "address"
+            }
+        ],
+        "name": "getProductId",
+        "outputs": [
+            {
+                "internalType": "uint40",
+                "name": "id",
+                "type": "uint40"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum TokenType",
+                "name": "_tokenType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint40",
+                "name": "_productId",
+                "type": "uint40"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_expiry",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_longStrike",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_shortStrike",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTokenId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastAssetId",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastEngineId",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "lastOracleId",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "optionToken",
+        "outputs": [
+            {
+                "internalType": "contract IOptionToken",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "oracleIds",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "name": "oracles",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_asset",
+                "type": "address"
+            }
+        ],
+        "name": "registerAsset",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_engine",
+                "type": "address"
+            }
+        ],
+        "name": "registerEngine",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_oracle",
+                "type": "address"
+            }
+        ],
+        "name": "registerOracle",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "id",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "settleOption",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

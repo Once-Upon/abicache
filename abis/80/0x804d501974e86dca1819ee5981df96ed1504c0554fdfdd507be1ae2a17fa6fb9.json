@@ -1,0 +1,943 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "initialOwner",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "CallerIsNotNewPotentialOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "CallerIsNotOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InitialOwnerIsNullAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NewPotentialOwnerIsNullAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "currentOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnerAlreadySet",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "revertReason",
+                "type": "string"
+            }
+        ],
+        "name": "CallFailure",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "rolledBack",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "returnData",
+                "type": "bytes"
+            }
+        ],
+        "name": "CallSuccess",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newPotentialOwner",
+                "type": "address"
+            }
+        ],
+        "name": "PotentialOwnerUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.Call[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "_execute",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.CallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "valueLength",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.ValueReplacement[]",
+                        "name": "replaceValue",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "dataLength",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "callDataOffset",
+                                "type": "uint24"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.DataReplacement[]",
+                        "name": "replaceData",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCall[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "_executeAdvanced",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "callValue",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "callData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.Call[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "_simulate",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.CallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "valueLength",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.ValueReplacement[]",
+                        "name": "replaceValue",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "dataLength",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "callDataOffset",
+                                "type": "uint24"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.DataReplacement[]",
+                        "name": "replaceData",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCall[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "_simulateAdvanced",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "callValue",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "callData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "acceptOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelOwnershipTransfer",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.Call[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "execute",
+        "outputs": [
+            {
+                "internalType": "bool[]",
+                "name": "ok",
+                "type": "bool[]"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "returnData",
+                "type": "bytes[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "valueLength",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.ValueReplacement[]",
+                        "name": "replaceValue",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "dataLength",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "callDataOffset",
+                                "type": "uint24"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.DataReplacement[]",
+                        "name": "replaceData",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCall[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "executeAdvanced",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "callValue",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "callData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "digest",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes",
+                "name": "signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "isValidSignature",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "ids",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "values",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC1155BatchReceived",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC1155Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "potentialOwner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.Call[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "simulate",
+        "outputs": [
+            {
+                "internalType": "bool[]",
+                "name": "ok",
+                "type": "bool[]"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "returnData",
+                "type": "bytes[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "to",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "value",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "data",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "valueLength",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.ValueReplacement[]",
+                        "name": "replaceValue",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint24",
+                                "name": "returnDataOffset",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "dataLength",
+                                "type": "uint24"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "callIndex",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint24",
+                                "name": "callDataOffset",
+                                "type": "uint24"
+                            }
+                        ],
+                        "internalType": "struct SmartWalletInterface.DataReplacement[]",
+                        "name": "replaceData",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCall[]",
+                "name": "calls",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "simulateAdvanced",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "ok",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "returnData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "callValue",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "callData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SmartWalletInterface.AdvancedCallReturn[]",
+                "name": "callResults",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newPotentialOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

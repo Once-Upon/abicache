@@ -1,0 +1,868 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_donationsRouter",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_buyInToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_staking",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_WETH",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_swapTarget",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "AccountNotDaoOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "AccountNotGovernor",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ApprovalExpired",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "CannotBeZeroAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "CausePaused",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ChildDaoNotRegistered",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ChildDaoReleaseNotStarted",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "EthTransferFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidSignature",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "prod1",
+                "type": "uint256"
+            }
+        ],
+        "name": "PRBMath__MulDivFixedPointOverflow",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UserAmountExceeded",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WrongBuyToken",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WrongSellToken",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WrongSwapTarget",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroXSwapFailed",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "childDaoToken",
+                "type": "address"
+            }
+        ],
+        "name": "ChildDaoRegistered",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "buyer",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "autoStake",
+                "type": "bool"
+            }
+        ],
+        "name": "DaoTokenPurchased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxSupply",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract ERC20Singleton",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "MaxSupplySet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxSwap",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract ERC20Singleton",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "MaxSwapSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "WETH",
+        "outputs": [
+            {
+                "internalType": "contract IWETH",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "buyInToken",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint8",
+                "name": "decimals",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "causeInformation",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "release",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxPerUser",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "exchangeRate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "childDaoRegistry",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "autoStaking",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "kycEnabled",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "paused",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "donationsRouter",
+        "outputs": [
+            {
+                "internalType": "contract DonationsRouter",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            }
+        ],
+        "name": "enableKyc",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            }
+        ],
+        "name": "pauseCause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_KYCId",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_expiry",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_signature",
+                "type": "bytes"
+            }
+        ],
+        "name": "purchaseToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_autoStaking",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "_kycEnabled",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxSupply",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxSwap",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_release",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_exchangeRate",
+                "type": "uint256"
+            }
+        ],
+        "name": "registerChildDao",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_state",
+                "type": "bool"
+            }
+        ],
+        "name": "setAutoStake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "name": "setBuyInToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract DonationsRouter",
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "name": "setDonationsRouter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_rate",
+                "type": "uint256"
+            }
+        ],
+        "name": "setExchangeRate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "name": "setGovernor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_max",
+                "type": "uint256"
+            }
+        ],
+        "name": "setMaxPerUser",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract StakingRewards",
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "name": "setStakingRewards",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_implementation",
+                "type": "address"
+            }
+        ],
+        "name": "setSwapTarget",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "staking",
+        "outputs": [
+            {
+                "internalType": "contract StakingRewards",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_KYCId",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_expiry",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_signature",
+                "type": "bytes"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "sellToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "buyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "buyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "sellAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "spender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address payable",
+                        "name": "swapTarget",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "swapTxData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct IClearingHouseV2.SwapData",
+                "name": "_swapData",
+                "type": "tuple"
+            }
+        ],
+        "name": "swapAndPurchaseToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_KYCId",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_expiry",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_signature",
+                "type": "bytes"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "sellToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "buyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "buyAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "sellAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "spender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address payable",
+                        "name": "swapTarget",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "swapTxData",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct IClearingHouseV2.SwapData",
+                "name": "_swapData",
+                "type": "tuple"
+            }
+        ],
+        "name": "swapETHAndPurchaseToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ERC20Singleton",
+                "name": "_childDaoToken",
+                "type": "address"
+            }
+        ],
+        "name": "unpauseCause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "usedSignatures",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "withdrawnAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "zeroXSwapTarget",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

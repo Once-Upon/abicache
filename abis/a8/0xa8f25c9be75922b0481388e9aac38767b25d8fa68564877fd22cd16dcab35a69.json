@@ -1,0 +1,1839 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_sweepers",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_dust",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "_ops",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IRandomizer",
+                "name": "_randomizer",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "_vrf",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "_legacy",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "CompId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "NFTProjectAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "CompCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "CompId",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "startTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "endTime",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "NFTContract",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "TokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "entryLimit",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "entryCap",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "entryPriceETH",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "BlindComp",
+                "type": "bool"
+            }
+        ],
+        "name": "CompCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "CompId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "NFTProjectAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenID",
+                "type": "uint256"
+            }
+        ],
+        "name": "CompFailed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "CompId",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "NFTProjectAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "winner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "winningEntryID",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "withETH",
+                "type": "bool"
+            }
+        ],
+        "name": "CompSettled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "EntryIds",
+                "type": "uint32"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint32",
+                "name": "CompId",
+                "type": "uint32"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "entryPrice",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "withETH",
+                "type": "bool"
+            }
+        ],
+        "name": "EntryReceived",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "From",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "Amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Received",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "DUST",
+        "outputs": [
+            {
+                "internalType": "contract IDust",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "Dev",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DevFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ETH",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SWEEPERS",
+        "outputs": [
+            {
+                "internalType": "contract INFT",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SettlementCost",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "VRF",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "VRFCost",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "_pickCompWinner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "activeCompCount",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "admin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "autoSettleComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "autoSettleTimer",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_numEntries",
+                "type": "uint16"
+            }
+        ],
+        "name": "buyEntryDust",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_numEntries",
+                "type": "uint16"
+            }
+        ],
+        "name": "buyEntryETH",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "canPickChecker",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "canExec",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes",
+                "name": "execPayload",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "canSettleChecker",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "canExec",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes",
+                "name": "execPayload",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "compEntries",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "compId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "contractAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "is1155",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint32",
+                "name": "startTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "endTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "entryPriceETH",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "entryCost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "entryCap",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "entryLimit",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "numberEntries",
+                "type": "uint16"
+            },
+            {
+                "internalType": "bool",
+                "name": "blind",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "settled",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "failed",
+                "type": "bool"
+            },
+            {
+                "internalType": "string",
+                "name": "hiddenImage",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "openseaSlug",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "compStatus",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "compWinner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_is1155",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_startTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_endTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "string",
+                "name": "_hiddenImage",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceETH",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryCap",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryLimit",
+                "type": "uint16"
+            },
+            {
+                "internalType": "string",
+                "name": "_slug",
+                "type": "string"
+            }
+        ],
+        "name": "createBlindComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_is1155",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_startTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_endTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceETH",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryCap",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryLimit",
+                "type": "uint16"
+            },
+            {
+                "internalType": "string",
+                "name": "_slug",
+                "type": "string"
+            }
+        ],
+        "name": "createComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nftContract",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bool",
+                "name": "_is1155",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_startTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_endTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceETH",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryCap",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_entryLimit",
+                "type": "uint16"
+            },
+            {
+                "internalType": "string",
+                "name": "_slug",
+                "type": "string"
+            }
+        ],
+        "name": "createManyCompSameProject",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "devCut",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "emergencyCancelComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "emergencyRescueETH",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_is1155",
+                "type": "bool"
+            }
+        ],
+        "name": "emergencyRescueNFT",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "entryId",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "entrant",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "compId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "useETH",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "winner",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "ethCollected",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gasLimit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gelato",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAllComps",
+        "outputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "comps",
+                "type": "uint32[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "status",
+                "type": "uint8[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "getEntriesByCompId",
+        "outputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "entryIds",
+                "type": "uint32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "getEntriesByUser",
+        "outputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "entryIds",
+                "type": "uint32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "getEntriesLengthForComp",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "getEntriesLengthForUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_entryId",
+                "type": "uint32"
+            }
+        ],
+        "name": "getEntryInfoByIndex",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "_entrant",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_compId",
+                "type": "uint32"
+            },
+            {
+                "internalType": "string",
+                "name": "_entryStatus",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTotalEntriesLength",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "legacyCut",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "legacyTreasury",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "taskId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "manualStopTask",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "mustHold",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC1155BatchReceived",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC1155Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "ops",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            }
+        ],
+        "name": "pickCompWinner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "pickWinnerTaskId",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "randomizer",
+        "outputs": [
+            {
+                "internalType": "contract IRandomizer",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_dev",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_devFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setDev",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint16",
+                "name": "_sweepersCut",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_legacyCut",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_devCut",
+                "type": "uint16"
+            }
+        ],
+        "name": "setDistribution",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_dust",
+                "type": "address"
+            }
+        ],
+        "name": "setDust",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_flag",
+                "type": "bool"
+            }
+        ],
+        "name": "setMustHold",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_sweepers",
+                "type": "address"
+            }
+        ],
+        "name": "setSweepers",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "shouldStopTask",
+                "type": "bool"
+            }
+        ],
+        "name": "settleComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "settleTaskId",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceID",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "sweepersCut",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "sweepersTreasury",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_admin",
+                "type": "address"
+            }
+        ],
+        "name": "updateAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateBlindComp",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "_is1155",
+                "type": "bool"
+            }
+        ],
+        "name": "updateBlindComp1155",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "string",
+                "name": "_hiddenImage",
+                "type": "string"
+            }
+        ],
+        "name": "updateBlindImage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "_endTime",
+                "type": "uint32"
+            }
+        ],
+        "name": "updateCompEndTime",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryCost",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateCompEntryCost",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceDust",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_entryPriceETH",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateCompEntryPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "updateLegacyTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_id",
+                "type": "uint32"
+            },
+            {
+                "internalType": "string",
+                "name": "_slug",
+                "type": "string"
+            }
+        ],
+        "name": "updateOpenseaSlug",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IRandomizer",
+                "name": "_randomizer",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "_vrf",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_vrfCost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_settlementCost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gasLimit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_autoSettleTimer",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateSettlementParams",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "updateSweepersTreasury",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "userEntries",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "winnerRequested",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "name": "winnerRequestedTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

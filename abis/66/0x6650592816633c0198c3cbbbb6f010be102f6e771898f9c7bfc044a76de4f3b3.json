@@ -1,0 +1,560 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_proxyAdmin",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_wethToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_rewardsToken",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "exchange",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "creator",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tradeRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "amm",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "exchangeLedger",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenVault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "priceOracle",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "ammAdapter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "assetToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "liquidityToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "liquidityIncentives",
+                        "type": "address"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct ExchangeDeployment",
+                "name": "data",
+                "type": "tuple"
+            }
+        ],
+        "name": "ExchangeAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "exchangeLedgerLogic",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "stakingIncentivesLogic",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "spotMarketAmmLogic",
+                "type": "address"
+            }
+        ],
+        "name": "LogicContractsUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "oldTokenVault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newTokenVault",
+                "type": "address"
+            }
+        ],
+        "name": "TokenVaultAdminUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "assetToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "stableToken",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "liquidityTokenName",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "liquidityTokenSymbol",
+                "type": "string"
+            },
+            {
+                "internalType": "address",
+                "name": "priceOracle",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "ammAdapter",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "int256",
+                        "name": "tradeFeeFraction",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "timeFee",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxLeverage",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minCollateral",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "treasuryFraction",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "dfrRate",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "liquidatorFrac",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "maxLiquidatorFee",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "poolLiquidationFrac",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "maxPoolLiquidationFee",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "adlFeePercent",
+                        "type": "int256"
+                    }
+                ],
+                "internalType": "struct IExchangeLedger.ExchangeConfig",
+                "name": "exchangeConfig",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "int256",
+                        "name": "removeLiquidityFee",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "tradeLiquidityReserveFactor",
+                        "type": "int256"
+                    }
+                ],
+                "internalType": "struct SpotMarketAmm.AmmConfig",
+                "name": "ammConfig",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address",
+                "name": "incentivesHook",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "liquidityRewardsLockupTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "createExchangeWithSpotMarketAmm",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tradeRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "amm",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "exchangeLedger",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenVault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "priceOracle",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "ammAdapter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "assetToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "stableToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "liquidityToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "liquidityIncentives",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct ExchangeDeployment",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "exchangeLedgerLogic",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gitCommitHash",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_exchangeLedgerLogic",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_stakingIncentivesLogic",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_spotMarketAmmLogic",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_tokenVaultAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proxyAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rewardsToken",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_exchangeLedgerLogic",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_stakingIncentivesLogic",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_spotMarketAmmLogic",
+                "type": "address"
+            }
+        ],
+        "name": "setLogicContracts",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_tokenVaultAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "setTokenVaultAdmin",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "spotMarketAmmLogic",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "stakingIncentivesLogic",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenVaultAdmin",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "treasury",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "wethToken",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

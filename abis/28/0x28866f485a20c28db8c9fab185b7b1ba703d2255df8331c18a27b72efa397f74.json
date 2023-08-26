@@ -1,0 +1,1295 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "eternalStorage",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "minRollFee",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "ErrorME01InvalidFee",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME02TokenNotAllowed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME03NotEnoughTokens",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME04NotEnoughPhases",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME05OnlyOwnerAllowed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME06ScheduleDoesNotExists",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME07ScheduleRevoked",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME08ScheduleNotActive",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME09ScheduleNotFinished",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME10ActionAllowlisted",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME11TransferError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME12IndexOutOfBounds",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME13InvalidAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME14BetaPeriodAlreadyFinish",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME15InvalidDate",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME16InvalidDuration",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME17InvalidPrice",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME18LotArrayLengthMismatch",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME19NotEnoughEth",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME20InvalidReferral",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME21InvalidReferralFee",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME22MaxBuyPerWalletExceeded",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME23TotalClaimedError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME24InvalidProof",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME25ScheduleNotFinishedOrSoldOut",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME26OnlyMembershipsImpl",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME27TotalAmountExceeded",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME28InvalidAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ErrorME29InvalidMaxBuyPerWallet",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "newRoot",
+                "type": "bytes32"
+            }
+        ],
+        "name": "EventAllowlistUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "lots",
+                "type": "uint256"
+            }
+        ],
+        "name": "EventBuyLot",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokens",
+                "type": "uint256"
+            }
+        ],
+        "name": "EventBuyToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "EventClaim",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "EventScheduleOwnerTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "EventScheduleRevoked",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "EventUnsoldTokensClaimed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "previousAdminRole",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "newAdminRole",
+                "type": "bytes32"
+            }
+        ],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MEMBERSHIP_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "campaignId",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "bytes32[]",
+                        "name": "phases",
+                        "type": "bytes32[]"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "metadata",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.Campaign",
+                "name": "value",
+                "type": "tuple"
+            }
+        ],
+        "name": "addCampaign",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "msgValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "claim",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "claimReferral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "claimRoll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "memberships",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "claimUnsoldTokens",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "computeUnsoldLots",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "start",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "duration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "merkleRoot",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountTotal",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "lotToken",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "lotSize",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "pricePerLot",
+                        "type": "uint256"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum MembershipsTypes.AssetType",
+                                "name": "assetType",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct MembershipsTypes.Asset",
+                        "name": "paymentAsset",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rollFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "referral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "referralFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBuyPerWallet",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.CreateMintingScheduleParams",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "createMintingScheduleValidation",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "name": "getCampaignCreatedByAddress",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum MembershipsTypes.UserType",
+                "name": "userType",
+                "type": "uint8"
+            }
+        ],
+        "name": "getClaimed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "record",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getReferral",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "referral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "referralFee",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.ScheduleReferral",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getRoleAdmin",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "record",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getSchedule",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "initialized",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "revoked",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "start",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "duration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "merkleRoot",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountTotal",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "released",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "lotToken",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "lotSize",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum MembershipsTypes.AssetType",
+                                "name": "assetType",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct MembershipsTypes.Asset",
+                        "name": "paymentAsset",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "pricePerLot",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rollFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBuyPerWallet",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.MintingSchedule",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "grantRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "hasRole",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            }
+        ],
+        "name": "isTokenAllowed",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "renounceRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            }
+        ],
+        "name": "revoke",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "root",
+                "type": "bytes32"
+            }
+        ],
+        "name": "setAllowlist",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "addr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "setBuyPerWallet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum MembershipsTypes.UserType",
+                "name": "userType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "setClaimed",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "record",
+                "type": "bytes32"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "referral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "referralFee",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.ScheduleReferral",
+                "name": "value",
+                "type": "tuple"
+            }
+        ],
+        "name": "setReferral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "record",
+                "type": "bytes32"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "initialized",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "revoked",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "start",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "duration",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "merkleRoot",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amountTotal",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "released",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "lotToken",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "lotSize",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "enum MembershipsTypes.AssetType",
+                                "name": "assetType",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct MembershipsTypes.Asset",
+                        "name": "paymentAsset",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "pricePerLot",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "rollFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBuyPerWallet",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct MembershipsTypes.MintingSchedule",
+                "name": "value",
+                "type": "tuple"
+            }
+        ],
+        "name": "setSchedule",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "value",
+                "type": "bool"
+            }
+        ],
+        "name": "setTokensAllowed",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "owner_",
+                "type": "address"
+            }
+        ],
+        "name": "transferScheduleOwner",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "campaignId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "string",
+                "name": "metadata",
+                "type": "string"
+            }
+        ],
+        "name": "updateCampaignMetadata",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "referral",
+                "type": "address"
+            }
+        ],
+        "name": "updateReferral",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "scheduleId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32[]",
+                "name": "proof",
+                "type": "bytes32[]"
+            }
+        ],
+        "name": "verifyMerkle",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

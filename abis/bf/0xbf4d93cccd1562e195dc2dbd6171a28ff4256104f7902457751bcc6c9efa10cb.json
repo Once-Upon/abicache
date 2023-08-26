@@ -1,0 +1,1344 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_parametersStorage",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "borrower",
+                "type": "address"
+            }
+        ],
+        "name": "AuctionCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "borrower",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint16",
+                "name": "newInterestRateMax",
+                "type": "uint16"
+            }
+        ],
+        "name": "AuctionInterestRateMaxUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "borrower",
+                "type": "address"
+            }
+        ],
+        "name": "AuctionStarted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "lender",
+                "type": "address"
+            }
+        ],
+        "name": "LoanIssued",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "liquidator",
+                "type": "address"
+            }
+        ],
+        "name": "LoanLiquidated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "loanId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "borrower",
+                "type": "address"
+            }
+        ],
+        "name": "LoanRepaid",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BASIS_POINTS_IN_1",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "MAX_DURATION_DAYS",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "VERSION",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            }
+        ],
+        "name": "accept",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            }
+        ],
+        "name": "cancelAuction",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getActiveAuctions",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getActiveAuctionsCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "getActiveAuctionsLimited",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getActiveLoans",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getActiveLoansCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "getActiveLoansLimited",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getLoans",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getLoansCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "getLoansLimited",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "getUserLoans",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            }
+        ],
+        "name": "getUserLoansCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_user",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_offset",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_limit",
+                "type": "uint256"
+            }
+        ],
+        "name": "getUserLoansLimited",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "_ids",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "borrower",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint32",
+                                "name": "startTS",
+                                "type": "uint32"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMin",
+                                "type": "uint16"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "interestRateMax",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct BorrowModule.AuctionInfo",
+                        "name": "auctionInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "enum BorrowModule.LoanState",
+                        "name": "state",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRate",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "lender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.Loan[]",
+                "name": "_loans",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            }
+        ],
+        "name": "liquidate",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "loanIdsByUser",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "loans",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "borrower",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTS",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRateMin",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRateMax",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct BorrowModule.AuctionInfo",
+                "name": "auctionInfo",
+                "type": "tuple"
+            },
+            {
+                "internalType": "enum BorrowModule.LoanState",
+                "name": "state",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint16",
+                "name": "durationDays",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint32",
+                "name": "startTS",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "interestRate",
+                "type": "uint16"
+            },
+            {
+                "internalType": "address",
+                "name": "collateral",
+                "type": "address"
+            },
+            {
+                "internalType": "enum Assets.AssetType",
+                "name": "collateralType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateralIdOrAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "lender",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "debtCurrency",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "debtAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "parameters",
+        "outputs": [
+            {
+                "internalType": "contract IParametersStorage",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            }
+        ],
+        "name": "repay",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint16",
+                        "name": "durationDays",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRateMin",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "interestRateMax",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collateral",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum Assets.AssetType",
+                        "name": "collateralType",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "collateralIdOrAmount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "debtCurrency",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "debtAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct BorrowModule.AuctionStartParams",
+                "name": "_params",
+                "type": "tuple"
+            }
+        ],
+        "name": "startAuction",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_loanId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_newInterestRateMax",
+                "type": "uint16"
+            }
+        ],
+        "name": "updateAuctionInterestRateMax",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

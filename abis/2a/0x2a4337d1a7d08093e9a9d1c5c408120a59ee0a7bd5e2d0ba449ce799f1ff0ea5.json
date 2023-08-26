@@ -1,0 +1,481 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_payment",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "_beneficiary",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_admin",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ERCX",
+                "name": "ERCX_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "leasingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "claimedAt",
+                "type": "uint32"
+            }
+        ],
+        "name": "CollateralClaimed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "nftAddress",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "leasingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "leaserAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "maxRentDuration",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes4",
+                "name": "dailyRentPrice",
+                "type": "bytes4"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IPayment.PaymentToken",
+                "name": "paymentToken",
+                "type": "uint8"
+            }
+        ],
+        "name": "Leased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "leasingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "stoppedAt",
+                "type": "uint32"
+            }
+        ],
+        "name": "LeasingStopped",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "leasingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "renterAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "rentDuration",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "rentedAt",
+                "type": "uint32"
+            }
+        ],
+        "name": "Rented",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "leasingId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "returnedAt",
+                "type": "uint32"
+            }
+        ],
+        "name": "Returned",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_nfts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_leasingIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "cancelLeasing",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_nfts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_leasingIds",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "endRent",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "LeaseId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getLeasing",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "leaserAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "maxLeaseDuration",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "bytes4",
+                        "name": "dailyLeasePrice",
+                        "type": "bytes4"
+                    },
+                    {
+                        "internalType": "enum IPayment.PaymentToken",
+                        "name": "paymentToken",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct vRent.Leasing",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "LeaseId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRenting",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address payable",
+                        "name": "renterAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "rentDuration",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "rentedAt",
+                        "type": "uint32"
+                    }
+                ],
+                "internalType": "struct vRent.Renting",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getleasingId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_nfts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "_maxLeaseDurations",
+                "type": "uint8[]"
+            },
+            {
+                "internalType": "bytes4[]",
+                "name": "_dailyLeasePrices",
+                "type": "bytes4[]"
+            },
+            {
+                "internalType": "enum IPayment.PaymentToken[]",
+                "name": "_paymentTokens",
+                "type": "uint8[]"
+            }
+        ],
+        "name": "lease",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "onERC721Received",
+        "outputs": [
+            {
+                "internalType": "bytes4",
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rentFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_nfts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tokenIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_leasingIds",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint8[]",
+                "name": "_rentDurations",
+                "type": "uint8[]"
+            }
+        ],
+        "name": "rentNFT",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "_newBeneficiary",
+                "type": "address"
+            }
+        ],
+        "name": "setBeneficiary",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_paused",
+                "type": "bool"
+            }
+        ],
+        "name": "setPaused",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_rentFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRentFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

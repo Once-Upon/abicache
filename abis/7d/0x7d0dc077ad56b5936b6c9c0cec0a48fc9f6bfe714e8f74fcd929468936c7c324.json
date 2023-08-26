@@ -1,0 +1,492 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_governor",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IDataFeed",
+                "name": "_dataFeed",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "periodDuration",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "strategyCooldown",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "defaultTwapThreshold",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "twapLength",
+                        "type": "uint32"
+                    }
+                ],
+                "internalType": "struct IDataFeedStrategy.StrategySettings",
+                "name": "_params",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LengthMismatch",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotStrategic",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlyGovernor",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlyPendingGovernor",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WrongSetting",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroAmount",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint24",
+                "name": "_defaultTwapThreshold",
+                "type": "uint24"
+            }
+        ],
+        "name": "DefaultTwapThresholdSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_newGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "PendingGovernorAccepted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_governor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "_pendingGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "PendingGovernorSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "_periodDuration",
+                "type": "uint32"
+            }
+        ],
+        "name": "PeriodDurationSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum IDataFeedStrategy.TriggerReason",
+                "name": "_reason",
+                "type": "uint8"
+            }
+        ],
+        "name": "StrategicFetch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "_strategyCooldown",
+                "type": "uint32"
+            }
+        ],
+        "name": "StrategyCooldownSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint32",
+                "name": "_twapLength",
+                "type": "uint32"
+            }
+        ],
+        "name": "TwapLengthSet",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint24",
+                "name": "_twapThreshold",
+                "type": "uint24"
+            }
+        ],
+        "name": "TwapThresholdSet",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "acceptPendingGovernor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_fromSecondsAgo",
+                "type": "uint32"
+            }
+        ],
+        "name": "calculateSecondsAgos",
+        "outputs": [
+            {
+                "internalType": "uint32[]",
+                "name": "_secondsAgos",
+                "type": "uint32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "dataFeed",
+        "outputs": [
+            {
+                "internalType": "contract IDataFeed",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "defaultTwapThreshold",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum IDataFeedStrategy.TriggerReason",
+                "name": "_reason",
+                "type": "uint8"
+            }
+        ],
+        "name": "isStrategic",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "_strategic",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "isStrategic",
+        "outputs": [
+            {
+                "internalType": "enum IDataFeedStrategy.TriggerReason",
+                "name": "_reason",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pendingGovernor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "periodDuration",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint24",
+                "name": "_defaultTwapThreshold",
+                "type": "uint24"
+            }
+        ],
+        "name": "setDefaultTwapThreshold",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_pendingGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "setPendingGovernor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_periodDuration",
+                "type": "uint32"
+            }
+        ],
+        "name": "setPeriodDuration",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_strategyCooldown",
+                "type": "uint32"
+            }
+        ],
+        "name": "setStrategyCooldown",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint32",
+                "name": "_twapLength",
+                "type": "uint32"
+            }
+        ],
+        "name": "setTwapLength",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint24",
+                "name": "_poolTwapThreshold",
+                "type": "uint24"
+            }
+        ],
+        "name": "setTwapThreshold",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum IDataFeedStrategy.TriggerReason",
+                "name": "_reason",
+                "type": "uint8"
+            }
+        ],
+        "name": "strategicFetchObservations",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "strategyCooldown",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "twapLength",
+        "outputs": [
+            {
+                "internalType": "uint32",
+                "name": "",
+                "type": "uint32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_poolSalt",
+                "type": "bytes32"
+            }
+        ],
+        "name": "twapThreshold",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "_poolTwapThreshold",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

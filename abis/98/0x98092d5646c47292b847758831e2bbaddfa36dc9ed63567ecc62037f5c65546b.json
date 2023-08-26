@@ -1,0 +1,1398 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract WETH",
+                "name": "_weth",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "ClosingOnly",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "sig",
+                "type": "bytes4"
+            }
+        ],
+        "name": "FunctionNotFound",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            }
+        ],
+        "name": "InstrumentAlreadyExists",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "baseId",
+                "type": "bytes6"
+            }
+        ],
+        "name": "InvalidBaseId",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            }
+        ],
+        "name": "InvalidInstrument",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "quoteId",
+                "type": "bytes6"
+            }
+        ],
+        "name": "InvalidQuoteId",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "baseId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseMaturity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "quoteId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "uint256",
+                "name": "quoteMaturity",
+                "type": "uint256"
+            }
+        ],
+        "name": "MismatchedMaturity",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NothingToWrap",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "weth",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "OnlyFromWETH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TransactionRevertedSilently",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "UnknownToken",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "payer",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "ZeroAddress",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "previousAdmin",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "newAdmin",
+                "type": "address"
+            }
+        ],
+        "name": "AdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "BalanceCollected",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "beacon",
+                "type": "address"
+            }
+        ],
+        "name": "BeaconUpgraded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "previousAdminRole",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "newAdminRole",
+                "type": "bytes32"
+            }
+        ],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+            }
+        ],
+        "name": "Upgraded",
+        "type": "event"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "EMERGENCY_BREAK",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "OPERATOR",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "WITCH",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ContangoPositionNFT",
+                "name": "_positionNFT",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            }
+        ],
+        "name": "__ContangoBase_init",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes12",
+                "name": "vaultId",
+                "type": "bytes12"
+            },
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "name": "auctionEnded",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes12",
+                "name": "vaultId",
+                "type": "bytes12"
+            }
+        ],
+        "name": "auctionStarted",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes[]",
+                "name": "calls",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "batch",
+        "outputs": [
+            {
+                "internalType": "bytes[]",
+                "name": "results",
+                "type": "bytes[]"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "closingOnly",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes12",
+                "name": "vaultId",
+                "type": "bytes12"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ink",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "art",
+                "type": "uint256"
+            }
+        ],
+        "name": "collateralBought",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "collectBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "trader",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "quantity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limitCost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "collateral",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "payer",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lendingLiquidity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint24",
+                "name": "uniswapFee",
+                "type": "uint24"
+            }
+        ],
+        "name": "createPosition",
+        "outputs": [
+            {
+                "internalType": "PositionId",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "_symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "_baseId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "bytes6",
+                "name": "_quoteId",
+                "type": "bytes6"
+            },
+            {
+                "internalType": "contract IFeeModel",
+                "name": "_feeModel",
+                "type": "address"
+            }
+        ],
+        "name": "createYieldInstrument",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "maturity",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "uniswapFeeTransient",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "base",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "closingOnly",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "quote",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Instrument",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes6",
+                        "name": "baseId",
+                        "type": "bytes6"
+                    },
+                    {
+                        "internalType": "bytes6",
+                        "name": "quoteId",
+                        "type": "bytes6"
+                    },
+                    {
+                        "internalType": "contract IFYToken",
+                        "name": "quoteFyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IFYToken",
+                        "name": "baseFyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IPool",
+                        "name": "basePool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IPool",
+                        "name": "quotePool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "minQuoteDebt",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct YieldInstrument",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "PositionId",
+                "name": "positionId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "payer",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "deliver",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            }
+        ],
+        "name": "feeModel",
+        "outputs": [
+            {
+                "internalType": "contract IFeeModel",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract DaiAbstract",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "allowed",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "name": "forwardDaiPermit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IERC20Permit",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "deadline",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint8",
+                "name": "v",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "r",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "s",
+                "type": "bytes32"
+            }
+        ],
+        "name": "forwardPermit",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getRoleAdmin",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "grantRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "hasRole",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract ContangoPositionNFT",
+                "name": "_positionNFT",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_treasury",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IContangoLadle",
+                "name": "_ladle",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "PositionId",
+                "name": "positionId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int256",
+                "name": "collateral",
+                "type": "int256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "slippageTolerance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "payerOrReceiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lendingLiquidity",
+                "type": "uint256"
+            }
+        ],
+        "name": "modifyCollateral",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "PositionId",
+                "name": "positionId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int256",
+                "name": "quantity",
+                "type": "int256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "limitCost",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int256",
+                "name": "collateral",
+                "type": "int256"
+            },
+            {
+                "internalType": "address",
+                "name": "payerOrReceiver",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lendingLiquidity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint24",
+                "name": "uniswapFee",
+                "type": "uint24"
+            }
+        ],
+        "name": "modifyPosition",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "PositionId",
+                "name": "positionId",
+                "type": "uint256"
+            }
+        ],
+        "name": "position",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "Symbol",
+                        "name": "symbol",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "openQuantity",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "openCost",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "int256",
+                        "name": "collateral",
+                        "type": "int256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "protocolFees",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "maturity",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "contract IFeeModel",
+                        "name": "feeModel",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Position",
+                "name": "_position",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proxiableUUID",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "renounceRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_closingOnly",
+                "type": "bool"
+            }
+        ],
+        "name": "setClosingOnly",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "bool",
+                "name": "_closingOnly",
+                "type": "bool"
+            }
+        ],
+        "name": "setClosingOnly",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "contract IFeeModel",
+                "name": "_feeModel",
+                "type": "address"
+            }
+        ],
+        "name": "setFeeModel",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "trusted",
+                "type": "bool"
+            }
+        ],
+        "name": "setTrustedToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int256",
+                "name": "amount0Delta",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "amount1Delta",
+                "type": "int256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "uniswapV3SwapCallback",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "unwrapWETH",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "unwrapped",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+            }
+        ],
+        "name": "upgradeTo",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newImplementation",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "upgradeToAndCall",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "weth",
+        "outputs": [
+            {
+                "internalType": "contract WETH",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "wrapETH",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "wrapped",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "Symbol",
+                "name": "symbol",
+                "type": "bytes32"
+            }
+        ],
+        "name": "yieldInstrument",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "maturity",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "uniswapFeeTransient",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "base",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "closingOnly",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "contract ERC20",
+                        "name": "quote",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct Instrument",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes6",
+                        "name": "baseId",
+                        "type": "bytes6"
+                    },
+                    {
+                        "internalType": "bytes6",
+                        "name": "quoteId",
+                        "type": "bytes6"
+                    },
+                    {
+                        "internalType": "contract IFYToken",
+                        "name": "quoteFyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IFYToken",
+                        "name": "baseFyToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IPool",
+                        "name": "basePool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IPool",
+                        "name": "quotePool",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "minQuoteDebt",
+                        "type": "uint96"
+                    }
+                ],
+                "internalType": "struct YieldInstrument",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

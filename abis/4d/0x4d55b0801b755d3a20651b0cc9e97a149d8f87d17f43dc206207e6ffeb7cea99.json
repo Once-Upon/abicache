@@ -1,0 +1,686 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IOracle",
+                "name": "oracle_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "maxSlippage_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "key",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "oldRouting",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "newRouting",
+                "type": "bytes"
+            }
+        ],
+        "name": "DefaultRoutingUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "exchangeType",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isMain",
+                "type": "bool"
+            }
+        ],
+        "name": "ExchangeAsMainUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "exchangeType",
+                "type": "uint8"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldExchange",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newExchange",
+                "type": "address"
+            }
+        ],
+        "name": "ExchangeUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldMaxSlippage",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newMaxSlippage",
+                "type": "uint256"
+            }
+        ],
+        "name": "MaxSlippageUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IOracle",
+                "name": "oldOracle",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "contract IOracle",
+                "name": "newOracle",
+                "type": "address"
+            }
+        ],
+        "name": "OracleUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IExchange",
+                "name": "exchange",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapExactInput",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IExchange",
+                "name": "exchange",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "path",
+                "type": "bytes"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountInMax",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapExactOutput",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousGovernor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "proposedGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "UpdatedGovernor",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "acceptGovernorship",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "name": "addressOf",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "defaultRoutings",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAllExchanges",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOut_",
+                "type": "uint256"
+            }
+        ],
+        "name": "getBestAmountIn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountInMax",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IExchange",
+                "name": "_exchange",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_path",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn_",
+                "type": "uint256"
+            }
+        ],
+        "name": "getBestAmountOut",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountOutMin",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract IExchange",
+                "name": "_exchange",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_path",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getMainExchanges",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "maxSlippage",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "oracle",
+        "outputs": [
+            {
+                "internalType": "contract IOracle",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum DataTypes.SwapType",
+                "name": "swapType_",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "exchange_",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bytes",
+                "name": "path_",
+                "type": "bytes"
+            }
+        ],
+        "name": "setDefaultRouting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "type_",
+                "type": "uint8"
+            },
+            {
+                "internalType": "address",
+                "name": "exchange_",
+                "type": "address"
+            }
+        ],
+        "name": "setExchange",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver_",
+                "type": "address"
+            }
+        ],
+        "name": "swapExactInput",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountIn_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOutMin_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver_",
+                "type": "address"
+            }
+        ],
+        "name": "swapExactInputWithDefaultRouting",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOut_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver_",
+                "type": "address"
+            }
+        ],
+        "name": "swapExactOutput",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountIn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "tokenIn_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenOut_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountOut_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amountInMax_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "receiver_",
+                "type": "address"
+            }
+        ],
+        "name": "swapExactOutputWithDefaultRouting",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amountIn",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum DataTypes.ExchangeType",
+                "name": "type_",
+                "type": "uint8"
+            }
+        ],
+        "name": "toggleExchangeAsMain",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_proposedGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "transferGovernorship",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "maxSlippage_",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateMaxSlippage",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IOracle",
+                "name": "oracle_",
+                "type": "address"
+            }
+        ],
+        "name": "updateOracle",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

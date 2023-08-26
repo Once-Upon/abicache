@@ -1,0 +1,897 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_kyberScalingLib",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "ArrayLengthMismatch",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualPYOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredPYOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RouterInsufficientPYOut",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualSyOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RouterInsufficientSyOut",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "actualTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RouterInsufficientTokenOut",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RouterKyberSwapDataZero",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netPyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintPyFromSy",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netPyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintPyFromToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenIn",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "SY",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "MintSyFromToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "sys",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "yts",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "markets",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[][]",
+                "name": "syRewards",
+                "type": "uint256[][]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "ytInterests",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[][]",
+                "name": "ytRewards",
+                "type": "uint256[][]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[][]",
+                "name": "marketRewards",
+                "type": "uint256[][]"
+            }
+        ],
+        "name": "RedeemDueInterestAndRewards",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "sys",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "yts",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "markets",
+                "type": "address[]"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RedeemDueInterestAndRewardsThenSwapAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netPyIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RedeemPyToSy",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netPyIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RedeemPyToToken",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "caller",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenOut",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "SY",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "RedeemSyToToken",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "kyberScalingLib",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minPyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "mintPyFromSy",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netPyOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minPyOut",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "netTokenIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenMintSy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "bulk",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kyberRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "kybercall",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenInput",
+                "name": "input",
+                "type": "tuple"
+            }
+        ],
+        "name": "mintPyFromToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netPyOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "SY",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minSyOut",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "netTokenIn",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenMintSy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "bulk",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kyberRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "kybercall",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenInput",
+                "name": "input",
+                "type": "tuple"
+            }
+        ],
+        "name": "mintSyFromToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "sys",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "yts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "markets",
+                "type": "address[]"
+            }
+        ],
+        "name": "redeemDueInterestAndRewards",
+        "outputs": [
+            {
+                "internalType": "uint256[][]",
+                "name": "syRewards",
+                "type": "uint256[][]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "ytInterests",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "ytRewards",
+                "type": "uint256[][]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "marketRewards",
+                "type": "uint256[][]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "sys",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address[]",
+                        "name": "yts",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "syAddrs",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "tokenRedeemSys",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "bulks",
+                        "type": "address[]"
+                    }
+                ],
+                "internalType": "struct IPActionMintRedeem.RouterYtRedeemStruct",
+                "name": "dataYT",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address[]",
+                "name": "markets",
+                "type": "address[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "bytes[]",
+                        "name": "kybercalls",
+                        "type": "bytes[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kyberRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "outputToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minTokenOut",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IPActionMintRedeem.RouterSwapAllStruct",
+                "name": "dataSwap",
+                "type": "tuple"
+            }
+        ],
+        "name": "redeemDueInterestAndRewardsThenSwapAll",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "amountsSwapped",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netPyIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minSyOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeemPyToSy",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netSyOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "YT",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netPyIn",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minTokenOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenRedeemSy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "bulk",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kyberRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "kybercall",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenOutput",
+                "name": "output",
+                "type": "tuple"
+            }
+        ],
+        "name": "redeemPyToToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "receiver",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "SY",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "netSyIn",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minTokenOut",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenRedeemSy",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "bulk",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "kyberRouter",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "kybercall",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TokenOutput",
+                "name": "output",
+                "type": "tuple"
+            }
+        ],
+        "name": "redeemSyToToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "netTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

@@ -1,0 +1,799 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_weth",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_usdc",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_limitOrderQuoterAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_dexFactories",
+                "type": "address[]"
+            },
+            {
+                "internalType": "bool[]",
+                "name": "_isUniV2",
+                "type": "bool[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minExecutionCredit",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "AddressIsZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "AmountInIsZero",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "expectedFees",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feesPaid",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "unpaidFeesRemaining",
+                "type": "uint256"
+            }
+        ],
+        "name": "ConveyorFeesNotPaid",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ETHTransferFailed",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "IdenticalTokenAddresses",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "fillAmountSpecified",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amountInRemaining",
+                "type": "uint128"
+            }
+        ],
+        "name": "InsufficientFillAmountSpecified",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "amountOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expectedAmountOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientOutputAmount",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidTransferAddressArray",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotLimitOrderBook",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotLimitOrderRouter",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "MsgSenderIsNotOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "Reentrancy",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnauthorizedCaller",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnauthorizedUniswapV3CallbackCaller",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "executor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ExecutorCheckIn",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+            }
+        ],
+        "name": "UniV2SwapError",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "string",
+                "name": "reason",
+                "type": "string"
+            }
+        ],
+        "name": "UniV3SwapError",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "LIMIT_ORDER_ROUTER",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SANDBOX_LIMIT_ORDER_BOOK",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SANDBOX_LIMIT_ORDER_ROUTER",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "amountIn",
+                "type": "uint128"
+            },
+            {
+                "internalType": "address",
+                "name": "usdc",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "weth",
+                "type": "address"
+            }
+        ],
+        "name": "calculateFee",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "checkIn",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "confirmTransferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "dexes",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "factoryAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isUniV2",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint32",
+                        "name": "lastRefreshTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expirationTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "fillPercent",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "feeRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountInRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountOutRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "executionCreditRemaining",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "orderId",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct SandboxLimitOrderBook.SandboxLimitOrder[]",
+                "name": "orders",
+                "type": "tuple[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32[][]",
+                        "name": "orderIdBundles",
+                        "type": "bytes32[][]"
+                    },
+                    {
+                        "internalType": "uint128[]",
+                        "name": "fillAmounts",
+                        "type": "uint128[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "transferAddresses",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "target",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "callData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct SandboxLimitOrderRouter.Call[]",
+                        "name": "calls",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct SandboxLimitOrderRouter.SandboxMulticall",
+                "name": "sandboxMulticall",
+                "type": "tuple"
+            }
+        ],
+        "name": "executeSandboxLimitOrders",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "buy",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "taxed",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "stoploss",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lastRefreshTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expirationTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeIn",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeOut",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "taxIn",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "price",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountOutMin",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "quantity",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "executionCredit",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "orderId",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct LimitOrderBook.LimitOrder[]",
+                "name": "orders",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "executeTokenToTokenOrders",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "buy",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "taxed",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "stoploss",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lastRefreshTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "expirationTimestamp",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeIn",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeOut",
+                        "type": "uint24"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "taxIn",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "price",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "amountOutMin",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "quantity",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "executionCredit",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "owner",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenIn",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "tokenOut",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "orderId",
+                        "type": "bytes32"
+                    }
+                ],
+                "internalType": "struct LimitOrderBook.LimitOrder[]",
+                "name": "orders",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "executeTokenToWethOrders",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+            },
+            {
+                "internalType": "uint24",
+                "name": "FEE",
+                "type": "uint24"
+            }
+        ],
+        "name": "getAllPrices",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "spotPrice",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "res0",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "res1",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "token0IsReserve0",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct LimitOrderSwapRouter.SpotReserve[]",
+                "name": "prices",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "lps",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "lastCheckIn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int24",
+                "name": "",
+                "type": "int24"
+            }
+        ],
+        "name": "ticks",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "liquidityGross",
+                "type": "uint128"
+            },
+            {
+                "internalType": "int128",
+                "name": "liquidityNet",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feeGrowthOutside0X128",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feeGrowthOutside1X128",
+                "type": "uint256"
+            },
+            {
+                "internalType": "int56",
+                "name": "tickCumulativeOutside",
+                "type": "int56"
+            },
+            {
+                "internalType": "uint160",
+                "name": "secondsPerLiquidityOutsideX128",
+                "type": "uint160"
+            },
+            {
+                "internalType": "uint32",
+                "name": "secondsOutside",
+                "type": "uint32"
+            },
+            {
+                "internalType": "bool",
+                "name": "initialized",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "int256",
+                "name": "amount0Delta",
+                "type": "int256"
+            },
+            {
+                "internalType": "int256",
+                "name": "amount1Delta",
+                "type": "int256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "uniswapV3SwapCallback",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawConveyorFees",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

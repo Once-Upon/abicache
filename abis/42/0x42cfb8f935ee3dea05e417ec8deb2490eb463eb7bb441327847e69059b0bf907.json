@@ -1,0 +1,732 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_governor",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_usdc",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IERC20",
+                "name": "_fidu",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientBalanceToSwap",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InvalidBackstopPercentage",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "LenseIsNotAContract",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NoProposedTerms",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotGovernor",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotOwner",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "NotSwapper",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ProposedEndTimeIsInPast",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ProposedTermsDontMatch",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SwapperIsNullAddress",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TermOver",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroValueSwap",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Deposit",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "usdcAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fiduAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "FundsSwept",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "oldGovernor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "GovernorTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fiduAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "usdcReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapFiduForUsdc",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "usdcAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fiduReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "SwapUsdcForFidu",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "swapper",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "endTime",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "backstopPercentage",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IFiduLense",
+                "name": "lense",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxBackstopAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "TermsAccepted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "swapper",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "endTime",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "backstopPercentage",
+                "type": "uint64"
+            },
+            {
+                "indexed": false,
+                "internalType": "contract IFiduLense",
+                "name": "lense",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "maxBackstopAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "TermsProposed",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "acceptTerms",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint64",
+                "name": "_endTime",
+                "type": "uint64"
+            },
+            {
+                "internalType": "contract IFiduLense",
+                "name": "_lense",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_swapper",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_maxBackstopAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint64",
+                "name": "_backstopPercentage",
+                "type": "uint64"
+            }
+        ],
+        "name": "acceptTerms",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "activeTerms",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint64",
+                        "name": "endTime",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "contract IFiduLense",
+                        "name": "lense",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "swapper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "backstopPercentage",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "backstopUsed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBackstopAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Terms",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "backstopAvailable",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "backstopUsed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fidu",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "governor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isActive",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fiduAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "previewSwapFiduForUsdc",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "usdcAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "previewSwapUsdcForFidu",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "previewSweep",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint64",
+                        "name": "endTime",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "contract IFiduLense",
+                        "name": "lense",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "swapper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "backstopPercentage",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBackstopAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TermsProposal",
+                "name": "terms",
+                "type": "tuple"
+            }
+        ],
+        "name": "proposeTerms",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "proposedTerms",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint64",
+                        "name": "endTime",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "contract IFiduLense",
+                        "name": "lense",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "swapper",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "backstopPercentage",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "maxBackstopAmount",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct TermsProposal",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "fiduAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "swapFiduForUsdc",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "usdcAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "swapUsdcForFidu",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "swapper",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "sweep",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newGovernor",
+                "type": "address"
+            }
+        ],
+        "name": "transferGovernor",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "usdc",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

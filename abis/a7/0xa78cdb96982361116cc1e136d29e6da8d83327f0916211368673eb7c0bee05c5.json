@@ -1,0 +1,557 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "windowSize_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "granularity_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "minTimeElapsed_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "elapsedTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficientElapsedTime",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "MissingHistoricalObservation",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "NoObservationsForPool",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "timestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "ratioCumulative",
+                        "type": "uint256"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct PoolOracle.Observation",
+                "name": "observation",
+                "type": "tuple"
+            }
+        ],
+        "name": "ObservationRecorded",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "RAY",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "WAD",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "get",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "twar",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "getBuyBasePreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fyTokenIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "getBuyFYTokenPreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "baseIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "getOldestObservationInWindow",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "timestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "ratioCumulative",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct PoolOracle.Observation",
+                "name": "o",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSellBasePreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fyTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyTokenIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSellFYTokenPreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "baseOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "granularity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minTimeElapsed",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "observationIndexOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "peek",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "twar",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "peekBuyBasePreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fyTokenIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyTokenOut",
+                "type": "uint256"
+            }
+        ],
+        "name": "peekBuyFYTokenPreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "baseIn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "baseIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "peekSellBasePreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "fyTokenOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "fyTokenIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "peekSellFYTokenPreview",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "baseOut",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "updateTime",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "periodSize",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "poolObservations",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "ratioCumulative",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "updatePool",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "updated",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IPool[]",
+                "name": "pools",
+                "type": "address[]"
+            }
+        ],
+        "name": "updatePools",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "windowSize",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

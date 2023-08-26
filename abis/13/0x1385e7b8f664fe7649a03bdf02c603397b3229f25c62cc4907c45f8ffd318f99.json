@@ -1,0 +1,1221 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract IRegistry",
+                "name": "_registry",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IVariableTokenRecords",
+                "name": "_variableTokenRecords",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_ownerAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_grantManagerRoleToOwner",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "ContractCallerError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "GatewayNotSetError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlyGatewayError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlyManagerError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlyOwnerError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OnlySelfError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ReentrantCallError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ReservedTokenError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RouterNotSetError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SafeApproveError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SafeTransferError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SafeTransferFromError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SafeTransferNativeError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SameChainIdError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SameTokenError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SwapAmountMaxError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SwapAmountMinError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "SwapError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TargetSwapInfoError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "VariableTokenClaimFeeError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "VariableTokenNotSetError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "VaultNotSetError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WhenNotPausedError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "WhenPausedError",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroAddressError",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "targetChainId",
+                "type": "uint256"
+            }
+        ],
+        "name": "ActionFallback",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "targetChainId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sourceSender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "targetRecipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "gatewayType",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "sourceToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "targetToken",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "timestamp",
+                "type": "uint256"
+            }
+        ],
+        "name": "ActionSource",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "sourceChainId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "isSuccess",
+                "type": "bool"
+            }
+        ],
+        "name": "ActionTarget",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Pause",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "value",
+                "type": "bool"
+            }
+        ],
+        "name": "SetContractCallerAllowed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "value",
+                "type": "bool"
+            }
+        ],
+        "name": "SetManager",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "isLocal",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "routerType",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "fromTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "toTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "resultAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "SourceProcessed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "routerType",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "fromTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "toTokenAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "fromAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "resultAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "TargetProcessed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "Unpause",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "bool",
+                "name": "isTargetChain",
+                "type": "bool"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "tokenRecipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "vaultType",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "VariableTokenAllocated",
+        "type": "event"
+    },
+    {
+        "stateMutability": "nonpayable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [],
+        "name": "NATIVE_TOKEN_ADDRESS",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_fromAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isForward",
+                "type": "bool"
+            }
+        ],
+        "name": "calculateLocalAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_vaultType",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_fromChainId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_toChainId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_fromAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isForward",
+                "type": "bool"
+            }
+        ],
+        "name": "calculateVaultAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "result",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_vaultType",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimVariableToken",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_tokenAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "cleanup",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "contractCallerAllowed",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_vaultType",
+                "type": "uint256"
+            }
+        ],
+        "name": "convertVariableTokenToVaultAsset",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "gatewayType",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "vaultType",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "sourceTokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "fromAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "routerType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "routerData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IActionDataStructures.SwapInfo",
+                        "name": "sourceSwapInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "targetChainId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "targetTokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "fromAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "routerType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "routerData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IActionDataStructures.SwapInfo[]",
+                        "name": "targetSwapInfoOptions",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "targetRecipient",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IActionDataStructures.Action",
+                "name": "_action",
+                "type": "tuple"
+            }
+        ],
+        "name": "execute",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "fromTokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "toTokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "fromAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "routerType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "routerData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IActionDataStructures.SwapInfo",
+                        "name": "swapInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IActionDataStructures.LocalAction",
+                "name": "_localAction",
+                "type": "tuple"
+            }
+        ],
+        "name": "executeLocal",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "actionId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_messageSourceChainId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_payloadData",
+                "type": "bytes"
+            }
+        ],
+        "name": "handleExecutionPayload",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            },
+            {
+                "internalType": "bytes",
+                "name": "result",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_messageTargetChainId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_payloadData",
+                "type": "bytes"
+            }
+        ],
+        "name": "handleFallbackPayload",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            }
+        ],
+        "name": "isManager",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "isReservedToken",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "managerCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "managerIndexMap",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "isSet",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "managerList",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_gatewayType",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_targetChainId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes[]",
+                "name": "_targetRouterDataOptions",
+                "type": "bytes[]"
+            }
+        ],
+        "name": "messageFeeEstimate",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "registry",
+        "outputs": [
+            {
+                "internalType": "contract IRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceManagerRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "router",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct ISettings.TargetSettings",
+                "name": "settings",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "actionId",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "sourceSender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "vaultType",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "targetTokenAddress",
+                        "type": "address"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "fromAmount",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "routerType",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "routerData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IActionDataStructures.SwapInfo",
+                        "name": "targetSwapInfo",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "targetRecipient",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IActionDataStructures.TargetMessage",
+                "name": "_targetMessage",
+                "type": "tuple"
+            }
+        ],
+        "name": "selfCallTarget",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "_value",
+                "type": "bool"
+            }
+        ],
+        "name": "setContractCallerAllowed",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_value",
+                "type": "bool"
+            }
+        ],
+        "name": "setManager",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IRegistry",
+                "name": "_registry",
+                "type": "address"
+            }
+        ],
+        "name": "setRegistry",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "contract IVariableTokenRecords",
+                "name": "_variableTokenRecords",
+                "type": "address"
+            }
+        ],
+        "name": "setVariableTokenRecords",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_tokenAddress",
+                "type": "address"
+            }
+        ],
+        "name": "tokenBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_vaultType",
+                "type": "uint256"
+            }
+        ],
+        "name": "variableTokenBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_vaultType",
+                "type": "uint256"
+            }
+        ],
+        "name": "variableTokenFeeAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "variableTokenRecords",
+        "outputs": [
+            {
+                "internalType": "contract IVariableTokenRecords",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

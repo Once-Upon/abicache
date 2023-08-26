@@ -1,0 +1,923 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "gelato_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint16",
+                "name": "managerFeeBPS_",
+                "type": "uint16"
+            },
+            {
+                "internalType": "address",
+                "name": "terms_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "termDuration_",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "manager",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "operators",
+                "type": "address[]"
+            }
+        ],
+        "name": "AddOperators",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "datas",
+                "type": "bytes"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "strat",
+                "type": "string"
+            }
+        ],
+        "name": "AddVault",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "version",
+                "type": "uint8"
+            }
+        ],
+        "name": "Initialized",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "RebalanceVault",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "manager",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "operators",
+                "type": "address[]"
+            }
+        ],
+        "name": "RemoveOperators",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sendBack",
+                "type": "uint256"
+            }
+        ],
+        "name": "RemoveVault",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "oldtermDuration",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newtermDuration",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetTermEnd",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "SetVaultData",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "strat",
+                "type": "bytes32"
+            }
+        ],
+        "name": "SetVaultStrat",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "UpdateVaultBalance",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "manager",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "strat",
+                "type": "string"
+            }
+        ],
+        "name": "WhitelistStrat",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawVaultBalance",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "operators_",
+                "type": "address[]"
+            }
+        ],
+        "name": "addOperators",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "datas_",
+                "type": "bytes"
+            },
+            {
+                "internalType": "string",
+                "name": "strat_",
+                "type": "string"
+            }
+        ],
+        "name": "addVault",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            }
+        ],
+        "name": "fundVaultBalance",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "gelato",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            }
+        ],
+        "name": "getVaultInfo",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "balance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "lastRebalance",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "datas",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "strat",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "termEnd",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct VaultInfo",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getWhitelistedStrat",
+        "outputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "",
+                "type": "bytes32[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner_",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "managerFeeBPS",
+        "outputs": [
+            {
+                "internalType": "uint16",
+                "name": "",
+                "type": "uint16"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "operators",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "paused",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "int24",
+                        "name": "lowerTick",
+                        "type": "int24"
+                    },
+                    {
+                        "internalType": "int24",
+                        "name": "upperTick",
+                        "type": "int24"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeTier",
+                        "type": "uint24"
+                    }
+                ],
+                "internalType": "struct Range[]",
+                "name": "ranges_",
+                "type": "tuple[]"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint128",
+                                "name": "liquidity",
+                                "type": "uint128"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "int24",
+                                        "name": "lowerTick",
+                                        "type": "int24"
+                                    },
+                                    {
+                                        "internalType": "int24",
+                                        "name": "upperTick",
+                                        "type": "int24"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "feeTier",
+                                        "type": "uint24"
+                                    }
+                                ],
+                                "internalType": "struct Range",
+                                "name": "range",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct PositionLiquidity[]",
+                        "name": "removes",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint128",
+                                "name": "liquidity",
+                                "type": "uint128"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "int24",
+                                        "name": "lowerTick",
+                                        "type": "int24"
+                                    },
+                                    {
+                                        "internalType": "int24",
+                                        "name": "upperTick",
+                                        "type": "int24"
+                                    },
+                                    {
+                                        "internalType": "uint24",
+                                        "name": "feeTier",
+                                        "type": "uint24"
+                                    }
+                                ],
+                                "internalType": "struct Range",
+                                "name": "range",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct PositionLiquidity[]",
+                        "name": "deposits",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bytes",
+                                "name": "payload",
+                                "type": "bytes"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "router",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "amountIn",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "expectedMinReturn",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bool",
+                                "name": "zeroForOne",
+                                "type": "bool"
+                            }
+                        ],
+                        "internalType": "struct SwapPayload",
+                        "name": "swap",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minDeposit0",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "minDeposit1",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct Rebalance",
+                "name": "rebalanceParams_",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "int24",
+                        "name": "lowerTick",
+                        "type": "int24"
+                    },
+                    {
+                        "internalType": "int24",
+                        "name": "upperTick",
+                        "type": "int24"
+                    },
+                    {
+                        "internalType": "uint24",
+                        "name": "feeTier",
+                        "type": "uint24"
+                    }
+                ],
+                "internalType": "struct Range[]",
+                "name": "rangesToRemove_",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feeAmount_",
+                "type": "uint256"
+            }
+        ],
+        "name": "rebalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "operators_",
+                "type": "address[]"
+            }
+        ],
+        "name": "removeOperators",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "internalType": "address payable",
+                "name": "to_",
+                "type": "address"
+            }
+        ],
+        "name": "removeVault",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            }
+        ],
+        "name": "renewTerm",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data_",
+                "type": "bytes"
+            }
+        ],
+        "name": "setVaultData",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "strat_",
+                "type": "string"
+            }
+        ],
+        "name": "setVaultStraByName",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "termDuration",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "terms",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "vaults",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "balance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastRebalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "datas",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "strat",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "termEnd",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "strat_",
+                "type": "string"
+            }
+        ],
+        "name": "whitelistStrat",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "tokens_",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address",
+                "name": "to_",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawFeesEarned",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "vault_",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount_",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address payable",
+                "name": "to_",
+                "type": "address"
+            }
+        ],
+        "name": "withdrawVaultBalance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

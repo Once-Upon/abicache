@@ -1,0 +1,908 @@
+[
+    {
+        "inputs": [],
+        "name": "DuplicateWalletEntry",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "currentTier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requestedTier",
+                "type": "uint256"
+            }
+        ],
+        "name": "IneligibileTierUpdate",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "contractBalance",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "requiredAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "InsufficentBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "InsufficientWithdrawalBalance",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "alreadyDistributed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "proposedNewLimit",
+                "type": "uint256"
+            }
+        ],
+        "name": "LimitNotGreaterThanTotalDistributed",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "wallet",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "tokenAddress",
+                "type": "address"
+            }
+        ],
+        "name": "NoDueERC20Payment",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RevenuePathNotMutable",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TierLimitGivenZero",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TotalShareNotHundred",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "walletCount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "distributionCount",
+                "type": "uint256"
+            }
+        ],
+        "name": "WalletAndDistributionCountMismatch",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "walletCount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tierLimitCount",
+                "type": "uint256"
+            }
+        ],
+        "name": "WalletAndTierLimitMismatch",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroAddressProvided",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroDistributionProvided",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "wallet",
+                "type": "address"
+            }
+        ],
+        "name": "ZeroERC20Shares",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC20Distributed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "payment",
+                "type": "uint256"
+            }
+        ],
+        "name": "ERC20PaymentReleased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "updatedWalletList",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "updatedDistributionList",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "ERC20RevenueUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "distributionTier",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "walletList",
+                "type": "address[]"
+            }
+        ],
+        "name": "EthDistributed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "payment",
+                "type": "uint256"
+            }
+        ],
+        "name": "PaymentReleased",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[][]",
+                "name": "addedWalletLists",
+                "type": "address[][]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[][]",
+                "name": "addedDistributionLists",
+                "type": "uint256[][]"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "newTiersCount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RevenueTiersAdded",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address[]",
+                "name": "updatedWalletList",
+                "type": "address[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "updatedDistributionLists",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "updatedTierNumber",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "newLimit",
+                "type": "uint256"
+            }
+        ],
+        "name": "RevenueTiersUpdated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "BASE",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "VERSION",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[][]",
+                "name": "_walletList",
+                "type": "address[][]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "_distribution",
+                "type": "uint256[][]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "previousTierLimit",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "addRevenueTier",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "erc20Accounting",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "erc20Withdrawable",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCurrentTier",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "tierNumber",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getERC20Released",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getErc20WalletShare",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getEthWithdrawn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getFeeRequirementStatus",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "required",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getImmutabilityStatus",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "getPendingERC20Account",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getPendingEthBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "pendingAmount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPlatformFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPlatformWallet",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getRevenuePathName",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "getRevenueProportion",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "proportion",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tierNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRevenueTier",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "_limitAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_walletList",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTierDistributedAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "tier",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTierWalletCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "getTotalErc20Released",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTotalEthReleased",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTotalFeeAccumulated",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTotalRevenueTiers",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "total",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[][]",
+                "name": "_walletList",
+                "type": "address[][]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "_distribution",
+                "type": "uint256[][]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_tierLimit",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint88",
+                        "name": "platformFee",
+                        "type": "uint88"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "platformWallet",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isImmutable",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "name",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "factory",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct RevenuePath.PathInfo",
+                "name": "pathInfo",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address",
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address payable",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "release",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "releaseERC20",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_walletList",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_distribution",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "updateErc20Distribution",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_walletList",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "_distribution",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "newLimit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tierNumber",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateRevenueTier",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

@@ -1,0 +1,1252 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract ProxyRegistry",
+                "name": "registryAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract TokenTransferProxy",
+                "name": "tokenTransferProxyAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "contract ERC20",
+                "name": "tokenAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "protocolFeeAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "rewardFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "makerRelayerFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "takerRelayerFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "makerProtocolFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "takerProtocolFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "minter",
+                "type": "address"
+            }
+        ],
+        "name": "OrderApproved",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "hash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OrderCancelled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "sellHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "maker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "taker",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "target",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            }
+        ],
+        "name": "OrdersMatched",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "relaySetFeeTime",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "relayExchangeFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "RelaySetFee",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "relayRewardFeeRecipient",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "relaySetFeeRecipientTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "RelaySetRecipientFee",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "exchangeFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetFee",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "rewardFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "name": "SetFeeRecipient",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "SetStartTime",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "INVERSE_BASIS_POINT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_delaySetFeeRecipientTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_delaySetFeeTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_exchangeFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_relayExchangeFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_relayRewardFeeRecipient",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_relaySetFeeRecipientTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_relaySetFeeTime",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "_rewardFeeRecipient",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "approveOrder_",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "approvedOrders",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[14]",
+                "name": "addrs",
+                "type": "address[14]"
+            },
+            {
+                "internalType": "uint256[18]",
+                "name": "uints",
+                "type": "uint256[18]"
+            },
+            {
+                "internalType": "uint8[10]",
+                "name": "orderTypeFeeMethodsSidesKindsHowToCalls",
+                "type": "uint8[10]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "atomicMatch2_",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[14]",
+                "name": "addrs",
+                "type": "address[14]"
+            },
+            {
+                "internalType": "uint256[18]",
+                "name": "uints",
+                "type": "uint256[18]"
+            },
+            {
+                "internalType": "uint8[10]",
+                "name": "orderTypeFeeMethodsSidesKindsHowToCalls",
+                "type": "uint8[10]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "atomicMatch_",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            }
+        ],
+        "name": "calculateCurrentPrice_",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256",
+                "name": "basePrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "extra",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "listingTime",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "expirationTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateFinalPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[14]",
+                "name": "addrs",
+                "type": "address[14]"
+            },
+            {
+                "internalType": "uint256[18]",
+                "name": "uints",
+                "type": "uint256[18]"
+            },
+            {
+                "internalType": "uint8[10]",
+                "name": "orderTypeFeeMethodsSidesKindsHowToCalls",
+                "type": "uint8[10]"
+            }
+        ],
+        "name": "calculateMatchPrice_",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "cancelOrder_",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "cancelledOrFinalized",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinimumMakerProtocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeMinimumMakerProtocolFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "newMinimumTakerProtocolFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "changeMinimumTakerProtocolFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newProtocolFeeRecipient",
+                "type": "address"
+            }
+        ],
+        "name": "changeProtocolFeeRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "codename",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "exchangeToken",
+        "outputs": [
+            {
+                "internalType": "contract ERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "array",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "desired",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bytes",
+                "name": "mask",
+                "type": "bytes"
+            }
+        ],
+        "name": "guardedArrayReplace",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "hashOrder_",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "hashToSign_",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "matchIndex",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minimumMakerProtocolFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "minimumTakerProtocolFee",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[14]",
+                "name": "addrs",
+                "type": "address[14]"
+            },
+            {
+                "internalType": "uint256[18]",
+                "name": "uints",
+                "type": "uint256[18]"
+            },
+            {
+                "internalType": "uint8[10]",
+                "name": "orderTypeFeeMethodsSidesKindsHowToCalls",
+                "type": "uint8[10]"
+            }
+        ],
+        "name": "ordersCanMatch_",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "protocolFeeRecipient",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "registry",
+        "outputs": [
+            {
+                "internalType": "contract ProxyRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "relayExchangeFee_",
+                "type": "uint256"
+            }
+        ],
+        "name": "relaySetFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "relayRewardFeeRecipient_",
+                "type": "address"
+            }
+        ],
+        "name": "relaySetFeeRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            }
+        ],
+        "name": "setExchangeToken",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "exchangeFee_",
+                "type": "uint256"
+            }
+        ],
+        "name": "setFee",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "rewardFeeRecipient_",
+                "type": "address"
+            }
+        ],
+        "name": "setFeeRecipient",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "startTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "setStartTime",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "startTimes",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tokenTransferProxy",
+        "outputs": [
+            {
+                "internalType": "contract TokenTransferProxy",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            }
+        ],
+        "name": "validateOrderParameters_",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[7]",
+                "name": "addrs",
+                "type": "address[7]"
+            },
+            {
+                "internalType": "uint256[9]",
+                "name": "uints",
+                "type": "uint256[9]"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum ExchangeCoreBatch.FeeMethod",
+                "name": "feeMethod",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.Side",
+                "name": "side",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum SaleKindInterface.SaleKind",
+                "name": "saleKind",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AuthenticatedProxy.HowToCall",
+                "name": "howToCall",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "tokens",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "validateOrder_",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

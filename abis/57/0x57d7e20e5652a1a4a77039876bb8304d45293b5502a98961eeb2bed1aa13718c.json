@@ -1,0 +1,703 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_rollupProcessor",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_trancheFactory",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_trancheBytecodeHash",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "_balancerVaultAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_elementDeploymentValidatorAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "ALREADY_FINALISED",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ASSET_IDS_NOT_EQUAL",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ASSET_NOT_ERC20",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "BRIDGE_NOT_READY",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "HEAP_EMPTY",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INPUT_ASSETB_NOT_UNUSED",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INTERACTION_ALREADY_EXISTS",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_CALLER",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_CHANGE_IN_BALANCE",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_POOL",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_TOKEN_BALANCE_RECEIVED",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_TRANCHE",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "INVALID_WRAPPED_POSITION",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "OUTPUT_ASSETB_NOT_UNUSED",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "POOL_EXPIRY_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "POOL_NOT_FOUND",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "POOL_UNDERLYING_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RECEIVED_LESS_THAN_LIMIT",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TRANCHE_ALREADY_EXPIRED",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TRANCHE_EXPIRY_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TRANCHE_POSITION_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "TRANCHE_UNDERLYING_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UNKNOWN_NONCE",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UNREGISTERED_PAIR",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UNREGISTERED_POOL",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UNREGISTERED_POSITION",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "VAULT_ADDRESS_MISMATCH",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "VAULT_ADDRESS_VERIFICATION_FAILED",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalInputValue",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "int64",
+                "name": "gasUsed",
+                "type": "int64"
+            }
+        ],
+        "name": "LogConvert",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "success",
+                "type": "bool"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "message",
+                "type": "string"
+            },
+            {
+                "indexed": false,
+                "internalType": "int64",
+                "name": "gasUsed",
+                "type": "int64"
+            }
+        ],
+        "name": "LogFinalise",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "poolAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "wrappedPositionAddress",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint64",
+                "name": "expiry",
+                "type": "uint64"
+            }
+        ],
+        "name": "LogPoolAdded",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "assetToExpirys",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "inputAssetA",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "inputAssetB",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "outputAssetA",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "outputAssetB",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalInputValue",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "interactionNonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint64",
+                "name": "auxData",
+                "type": "uint64"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "convert",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "outputValueA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "outputValueB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isAsync",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "outputAssetA",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "erc20Address",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AztecTypes.AztecAssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AztecTypes.AztecAsset",
+                "name": "",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "interactionNonce",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint64",
+                "name": "",
+                "type": "uint64"
+            }
+        ],
+        "name": "finalise",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "outputValueA",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "outputValueB",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "interactionCompleted",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "asset",
+                "type": "address"
+            }
+        ],
+        "name": "getAssetExpiries",
+        "outputs": [
+            {
+                "internalType": "uint64[]",
+                "name": "assetExpiries",
+                "type": "uint64[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "interactionNonce",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTrancheDeploymentBlockNumber",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "blockNumber",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "asset",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "expiry",
+                "type": "uint64"
+            }
+        ],
+        "name": "hashAssetAndExpiry",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "hashValue",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "interactions",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "quantityPT",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "trancheAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "expiry",
+                "type": "uint64"
+            },
+            {
+                "internalType": "bool",
+                "name": "finalised",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "failed",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "pools",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "poolId",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "trancheAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "poolAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "wrappedPositionAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_convergentPool",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_wrappedPosition",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "_expiry",
+                "type": "uint64"
+            }
+        ],
+        "name": "registerConvergentPoolAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "rollupProcessor",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

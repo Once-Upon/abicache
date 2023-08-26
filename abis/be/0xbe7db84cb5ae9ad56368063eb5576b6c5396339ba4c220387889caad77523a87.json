@@ -1,0 +1,1192 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract Foundation",
+                "name": "_foundation_contract",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IAthleteSponsorshipNftUpgradeable",
+                "name": "_sponsorship_nft",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "athlete_address",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "origin_nft_address",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "token_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "AthleteWithdrawsFunds",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "InitAthleteSponsorship",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "chain_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum AthleteLib.Sport",
+                "name": "sport",
+                "type": "uint8"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "athlete_name",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OnChainAthleteCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "sponsorship_chain_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "sponsorship_origination_chain_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "ath_chain_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rnd_chain_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnChainAthleteSponsorshipCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "token_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "athlete_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "sponsorship_originator_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "round_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "OnChainAthleteSponsorshipNftCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "round",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "season",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "chain_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "location",
+                "type": "bytes32"
+            }
+        ],
+        "name": "OnChainSponsorshipRoundCreated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "athlete",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "athlete_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "SponsorshipCommission",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "token_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sponsor",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "ath_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "ath_sponsorship_id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "ath_sponsorship_origination_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "SponsorshipRefund",
+        "type": "event"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_name",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum AthleteLib.Sport",
+                "name": "_sport",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint8",
+                "name": "_player_number",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AthleteLib.PlayerPosition",
+                "name": "_player_position",
+                "type": "uint8"
+            }
+        ],
+        "name": "addAthlete",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_origin_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_token_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "athleteWithdrawsFundsUsingOriginNft",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_ath_db_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_ath_name",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "enum AthleteLib.Sport",
+                "name": "_ath_sport",
+                "type": "uint8"
+            },
+            {
+                "internalType": "uint8",
+                "name": "_ath_number",
+                "type": "uint8"
+            },
+            {
+                "internalType": "enum AthleteLib.PlayerPosition",
+                "name": "_ath_position",
+                "type": "uint8"
+            }
+        ],
+        "name": "buildOnChainAthleteInitStruct",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "db_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "full_name",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.Sport",
+                        "name": "sport",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "number",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.PlayerPosition",
+                        "name": "position",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.AthleteInitArgs",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_round_db_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_sponsorship_season",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_sponsorship_round",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_round_location",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_capacity",
+                "type": "uint16"
+            }
+        ],
+        "name": "buildOnChainSponsorshipRoundInitStruct",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "db_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "season",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "round",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "location",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "capacity",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.SponsorshipRoundInitArgs",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "closeDbSponsorshipRound",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "dbAthleteExistsOnChain",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "dbSponsorshipRoundExistsOnChain",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id_ath",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_db_id_sponsorship_round",
+                "type": "uint256"
+            }
+        ],
+        "name": "doOnChainInitAudit",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "init_athlete",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "init_sponsorship_round",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "sponsorship_serial",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.OnChainInitAudit",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fetchSponsorshipStats",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "cumulative_sponsorship_funds",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_on_chain_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthlete",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bytes32",
+                        "name": "player_name",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.Sport",
+                        "name": "sport",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "player_number",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.PlayerPosition",
+                        "name": "player_position",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct AthleteLib.Athlete",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAthleteCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_chain_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthleteDbIdFromChainId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthleteIdFromDbId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_athlete_sponsorship_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthleteSponsorship",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "athlete_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "round_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "claimed",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "funds_committed",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "funds_claimed_by_athlete",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "refund_eligible",
+                        "type": "bool"
+                    }
+                ],
+                "internalType": "struct AthleteSponsorshipUtils.AthleteSponsorship",
+                "name": "sponsorship",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getAthleteSponsorshipCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_ath_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_sponsorship_round_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthleteSponsorshipId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_athlete_sponsorship_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getAthleteSponsorshipNumbers",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "capacity",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "claimed",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_chain_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getRoundDbIdFromChainId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSponsorshipPrice",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getSponsorshipRoundCount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSponsorshipRoundIdFromDbId",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_token_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "giveRefundForNonUpgradedSponsorship",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_db_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_season",
+                "type": "uint16"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_type",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes32",
+                "name": "_location",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint16",
+                "name": "_capacity",
+                "type": "uint16"
+            }
+        ],
+        "name": "initSponsorshipRound",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_ath_sponsorship_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "isSponsorshipRefundEligible",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_chain_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "isValidRoundChainId",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_id",
+                "type": "uint256"
+            }
+        ],
+        "name": "isValidSponsorAttributes",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_contract_origin_nft",
+                "type": "address"
+            },
+            {
+                "internalType": "string",
+                "name": "_token_uri",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_on_chain_ath_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_athlete_wallet",
+                "type": "address"
+            }
+        ],
+        "name": "mintOriginNftToOnChainAthlete",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_new_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPrice",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_ath_sponsorship_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_val",
+                "type": "bool"
+            }
+        ],
+        "name": "setRefundEligible",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "init_athlete",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "init_sponsorship_round",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "sponsorship_serial",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.OnChainInitAudit",
+                "name": "_init_audit",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "db_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "full_name",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.Sport",
+                        "name": "sport",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "number",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "enum AthleteLib.PlayerPosition",
+                        "name": "position",
+                        "type": "uint8"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.AthleteInitArgs",
+                "name": "_athlete_args",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "db_id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "season",
+                        "type": "uint16"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "round",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes32",
+                        "name": "location",
+                        "type": "bytes32"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "capacity",
+                        "type": "uint16"
+                    }
+                ],
+                "internalType": "struct SponsorshipCreationLib.SponsorshipRoundInitArgs",
+                "name": "_round_args",
+                "type": "tuple"
+            },
+            {
+                "internalType": "string",
+                "name": "_token_uri",
+                "type": "string"
+            }
+        ],
+        "name": "sponsorSubmits",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_token_id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_signature_uri",
+                "type": "string"
+            }
+        ],
+        "name": "upgradeSponsorship",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

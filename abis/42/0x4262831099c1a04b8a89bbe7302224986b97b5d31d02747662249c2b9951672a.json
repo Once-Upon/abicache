@@ -1,0 +1,1091 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "contract ISpoolOwner",
+                "name": "_spoolOwner",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IController",
+                "name": "_controller",
+                "type": "address"
+            },
+            {
+                "internalType": "contract IStrategyRegistry",
+                "name": "_strategyRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_fastWithdraw",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint24",
+                "name": "index",
+                "type": "uint24"
+            }
+        ],
+        "name": "DoHardWorkCompleted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "DoHardWorkStrategyCompleted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint24",
+                "name": "index",
+                "type": "uint24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "reallocationTableHash",
+                "type": "bytes32"
+            }
+        ],
+        "name": "ReallocationTableUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint24",
+                "name": "index",
+                "type": "uint24"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "reallocationTableHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[][]",
+                "name": "reallocationTable",
+                "type": "uint256[][]"
+            }
+        ],
+        "name": "ReallocationTableUpdatedWithTable",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "actor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isAllocationProvider",
+                "type": "bool"
+            }
+        ],
+        "name": "SetAllocationProvider",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "actor",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "isDoHardWorker",
+                "type": "bool"
+            }
+        ],
+        "name": "SetIsDoHardWorker",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint24",
+                "name": "index",
+                "type": "uint24"
+            }
+        ],
+        "name": "StartReallocation",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            }
+        ],
+        "name": "addStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "stratIndexes",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "slippages",
+                "type": "uint256[][]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bool",
+                        "name": "doClaim",
+                        "type": "bool"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "slippage",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "path",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct SwapData[]",
+                        "name": "swapData",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct RewardSlippages[]",
+                "name": "rewardSlippages",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "allStrategies",
+                "type": "address[]"
+            }
+        ],
+        "name": "batchDoHardWork",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256[][]",
+                        "name": "reallocationTable",
+                        "type": "uint256[][]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "min",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "max",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct StratUnderlyingSlippage[]",
+                        "name": "priceSlippages",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "bool",
+                                "name": "doClaim",
+                                "type": "bool"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "slippage",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "bytes",
+                                        "name": "path",
+                                        "type": "bytes"
+                                    }
+                                ],
+                                "internalType": "struct SwapData[]",
+                                "name": "swapData",
+                                "type": "tuple[]"
+                            }
+                        ],
+                        "internalType": "struct RewardSlippages[]",
+                        "name": "rewardSlippages",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "stratIndexes",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[][]",
+                        "name": "slippages",
+                        "type": "uint256[][]"
+                    }
+                ],
+                "internalType": "struct ReallocationWithdrawData",
+                "name": "withdrawData",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256[]",
+                        "name": "stratIndexes",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[][]",
+                        "name": "slippages",
+                        "type": "uint256[][]"
+                    }
+                ],
+                "internalType": "struct ReallocationData",
+                "name": "depositData",
+                "type": "tuple"
+            },
+            {
+                "internalType": "address[]",
+                "name": "allStrategies",
+                "type": "address[]"
+            },
+            {
+                "internalType": "bool",
+                "name": "isOneTransaction",
+                "type": "bool"
+            }
+        ],
+        "name": "batchDoHardWorkReallocation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "controller",
+        "outputs": [
+            {
+                "internalType": "contract IController",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "deposit",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "skipDisable",
+                "type": "bool"
+            }
+        ],
+        "name": "disableStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "withdrawRecipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "data",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "emergencyWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "shares",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "slippages",
+                "type": "uint256[]"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "slippage",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "path",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct SwapData[]",
+                "name": "swapData",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "fastWithdrawStrat",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getActiveGlobalIndex",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getCompletedGlobalIndex",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "reward",
+                "type": "address"
+            }
+        ],
+        "name": "getPendingRewards",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "sharedKey",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "getStratSharedAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            }
+        ],
+        "name": "getStratUnderlying",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "vault",
+                "type": "address"
+            }
+        ],
+        "name": "getStratVaultShares",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            }
+        ],
+        "name": "getUnderlying",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "getVaultTotalUnderlyingAtIndex",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "globalIndex",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "isAllocationProvider",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "isDoHardWorker",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "isMidReallocation",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "_isMidReallocation",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "vault",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint8",
+                        "name": "strategiesCount",
+                        "type": "uint8"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "strategiesBitwise",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "newProportions",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct VaultData[]",
+                "name": "vaults",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "strategies",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[][]",
+                "name": "reallocationTable",
+                "type": "uint256[][]"
+            }
+        ],
+        "name": "reallocateVaults",
+        "outputs": [
+            {
+                "internalType": "uint256[][]",
+                "name": "",
+                "type": "uint256[][]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "reallocationIndex",
+        "outputs": [
+            {
+                "internalType": "uint24",
+                "name": "",
+                "type": "uint24"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeem",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "vaultStrategies",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "depositProportions",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "redeemReallocation",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            }
+        ],
+        "name": "redeemUnderlying",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "implementation",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "payload",
+                "type": "bytes"
+            }
+        ],
+        "name": "relay",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "vaultStrategies",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256",
+                "name": "vaultProportion",
+                "type": "uint256"
+            }
+        ],
+        "name": "removeShares",
+        "outputs": [
+            {
+                "internalType": "uint128[]",
+                "name": "",
+                "type": "uint128[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            }
+        ],
+        "name": "runDisableStrategy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isAllocationProvider",
+                "type": "bool"
+            }
+        ],
+        "name": "setAllocationProvider",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "isAwaiting",
+                "type": "bool"
+            }
+        ],
+        "name": "setAwaitingEmergencyWithdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "_isDoHardWorker",
+                "type": "bool"
+            }
+        ],
+        "name": "setDoHardWorker",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "doForce",
+                "type": "bool"
+            }
+        ],
+        "name": "setForceOneTxDoHardWork",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bool",
+                "name": "doLog",
+                "type": "bool"
+            }
+        ],
+        "name": "setLogReallocationTable",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "strategies",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "totalShares",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint24",
+                "name": "index",
+                "type": "uint24"
+            },
+            {
+                "internalType": "bool",
+                "name": "isRemoved",
+                "type": "bool"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint128",
+                        "name": "deposit",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "sharesToWithdraw",
+                        "type": "uint128"
+                    }
+                ],
+                "internalType": "struct Pending",
+                "name": "pendingUser",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "uint128",
+                        "name": "deposit",
+                        "type": "uint128"
+                    },
+                    {
+                        "internalType": "uint128",
+                        "name": "sharesToWithdraw",
+                        "type": "uint128"
+                    }
+                ],
+                "internalType": "struct Pending",
+                "name": "pendingUserNext",
+                "type": "tuple"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lpTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint128",
+                "name": "pendingDepositReward",
+                "type": "uint128"
+            },
+            {
+                "internalType": "bool",
+                "name": "isInDepositPhase",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint128",
+                "name": "optimizedSharesWithdrawn",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "pendingReallocateDeposit",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "pendingReallocateOptimizedDeposit",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "pendingReallocateAverageDeposit",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint256",
+                "name": "emergencyPending",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "strat",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "vaultProportion",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "index",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawalDoHardWorksLeft",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

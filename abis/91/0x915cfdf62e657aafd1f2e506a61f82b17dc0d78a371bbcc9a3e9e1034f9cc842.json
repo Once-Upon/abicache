@@ -1,0 +1,1138 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_swapperRegistry",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_superAdmin",
+                "type": "address"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_initialAdmins",
+                "type": "address[]"
+            },
+            {
+                "internalType": "address[]",
+                "name": "_initialSwapExecutors",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "name": "InvalidAllowanceTarget",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "RewardNotEnough",
+        "type": "error"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "swapper",
+                "type": "address"
+            }
+        ],
+        "name": "SwapperNotAllowlisted",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ToProvideIsTooMuch",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "UnexpectedSwapPlan",
+        "type": "error"
+    },
+    {
+        "inputs": [],
+        "name": "ZeroAddress",
+        "type": "error"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "previousAdminRole",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "newAdminRole",
+                "type": "bytes32"
+            }
+        ],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            }
+        ],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "reward",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "toProvide",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "platformFee",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapHandler.TokenInSwap[]",
+                "name": "_tokens",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "name": "DCAHubSwapCall",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "DEFAULT_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PROTOCOL_TOKEN",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SUPER_ADMIN_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SWAPPER_REGISTRY",
+        "outputs": [
+            {
+                "internalType": "contract ISwapperRegistry",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "SWAP_EXECUTION_ROLE",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "_tokens",
+                "type": "address[]"
+            }
+        ],
+        "name": "getBalances",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "token",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "balance",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct GetBalances.TokenBalance[]",
+                "name": "_balances",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            }
+        ],
+        "name": "getRoleAdmin",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "grantRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "hasRole",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IDCAHub",
+                        "name": "hub",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenA",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenB",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairIndexes[]",
+                        "name": "pairsToSwap",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "oracleData",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "contract IERC20",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "allowanceTarget",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "minAllowance",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Allowance[]",
+                        "name": "allowanceTargets",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "callbackData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deadline",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapper.OptimizedSwapParams",
+                "name": "_parameters",
+                "type": "tuple"
+            }
+        ],
+        "name": "optimizedSwap",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "reward",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "toProvide",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "platformFee",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.TokenInSwap[]",
+                        "name": "tokens",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "tokenA",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "tokenB",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioAToB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioBToA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes1",
+                                "name": "intervalsInSwap",
+                                "type": "bytes1"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairInSwap[]",
+                        "name": "pairs",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapHandler.SwapInfo",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "renounceRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "spender",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "contract IERC20[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    }
+                ],
+                "internalType": "struct ISwapAdapter.RevokeAction[]",
+                "name": "_revokeActions",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "revokeAllowances",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "role",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "revokeRole",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "_recipient",
+                "type": "address"
+            }
+        ],
+        "name": "sendDust",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IDCAHub",
+                        "name": "hub",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenA",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenB",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairIndexes[]",
+                        "name": "pairsToSwap",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "oracleData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "minimumOutput",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "uint256[]",
+                        "name": "maximumInput",
+                        "type": "uint256[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deadline",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapper.SwapForCallerParams",
+                "name": "_parameters",
+                "type": "tuple"
+            }
+        ],
+        "name": "swapForCaller",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "reward",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "toProvide",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "platformFee",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.TokenInSwap[]",
+                        "name": "tokens",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "tokenA",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "tokenB",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioAToB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioBToA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes1",
+                                "name": "intervalsInSwap",
+                                "type": "bytes1"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairInSwap[]",
+                        "name": "pairs",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapHandler.SwapInfo",
+                "name": "_swapInfo",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IDCAHub",
+                        "name": "hub",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenA",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenB",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairIndexes[]",
+                        "name": "pairsToSwap",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "oracleData",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "contract IERC20",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "allowanceTarget",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "minAllowance",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Allowance[]",
+                        "name": "allowanceTargets",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "swappers",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "swapperIndex",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "swapData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapper.SwapExecution[]",
+                        "name": "executions",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "leftoverRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "intermediateTokensToCheck",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deadline",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapper.SwapWithDexesParams",
+                "name": "_parameters",
+                "type": "tuple"
+            }
+        ],
+        "name": "swapWithDexes",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "reward",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "toProvide",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "platformFee",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.TokenInSwap[]",
+                        "name": "tokens",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "tokenA",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "tokenB",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioAToB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioBToA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes1",
+                                "name": "intervalsInSwap",
+                                "type": "bytes1"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairInSwap[]",
+                        "name": "pairs",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapHandler.SwapInfo",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "contract IDCAHub",
+                        "name": "hub",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "tokens",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenA",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "uint8",
+                                "name": "indexTokenB",
+                                "type": "uint8"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairIndexes[]",
+                        "name": "pairsToSwap",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "oracleData",
+                        "type": "bytes"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "contract IERC20",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "allowanceTarget",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "minAllowance",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Allowance[]",
+                        "name": "allowanceTargets",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "swappers",
+                        "type": "address[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint8",
+                                "name": "swapperIndex",
+                                "type": "uint8"
+                            },
+                            {
+                                "internalType": "bytes",
+                                "name": "swapData",
+                                "type": "bytes"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapper.SwapExecution[]",
+                        "name": "executions",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "leftoverRecipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address[]",
+                        "name": "intermediateTokensToCheck",
+                        "type": "address[]"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "deadline",
+                        "type": "uint256"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapper.SwapWithDexesParams",
+                "name": "_parameters",
+                "type": "tuple"
+            }
+        ],
+        "name": "swapWithDexesForMean",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "token",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "reward",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "toProvide",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "platformFee",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.TokenInSwap[]",
+                        "name": "tokens",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "tokenA",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "tokenB",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "totalAmountToSwapTokenB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioAToB",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "ratioBToA",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes1",
+                                "name": "intervalsInSwap",
+                                "type": "bytes1"
+                            }
+                        ],
+                        "internalType": "struct IDCAHubSwapHandler.PairInSwap[]",
+                        "name": "pairs",
+                        "type": "tuple[]"
+                    }
+                ],
+                "internalType": "struct IDCAHubSwapHandler.SwapInfo",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

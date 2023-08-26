@@ -1,0 +1,934 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_staking",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_underlying",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_piToken",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_governance",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "performanceFeeDebtBefore",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "performanceFeeDebtAfter",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "underlyingBalance",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "performance",
+                "type": "uint256"
+            }
+        ],
+        "name": "DistributePerformanceFee",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "totalReward",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "performanceFee",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "piTokenReward",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "lockedProfitBefore",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "lockedProfitAfter",
+                "type": "uint256"
+            }
+        ],
+        "name": "DistributeReward",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rewardReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "Redeem",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "staking",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Redeem",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rewardReceived",
+                "type": "uint256"
+            }
+        ],
+        "name": "Stake",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "staking",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "underlying",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "Stake",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "DEGRADATION_COEFFICIENT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "GOVERNANCE",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "HUNDRED_PCT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "LOCKED_PROFIT_DEGRADATION",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "PI_TOKEN",
+        "outputs": [
+            {
+                "internalType": "contract WrappedPiErc20Interface",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "RATIO_CONSTANT",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "STAKING",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "UNDERLYING",
+        "outputs": [
+            {
+                "internalType": "contract IERC20",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum PowerIndexRouterInterface.StakeStatus",
+                "name": "",
+                "type": "uint8"
+            },
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "name": "afterPoke",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "_pokeData",
+                "type": "bytes"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeParams",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "performanceFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "performanceFeeReceiver",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IRouterConnector.DistributeData",
+                "name": "_distributeData",
+                "type": "tuple"
+            },
+            {
+                "internalType": "bool",
+                "name": "_willClaimReward",
+                "type": "bool"
+            }
+        ],
+        "name": "beforePoke",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_wethAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcTornOutByWethIn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_tornAmountIn",
+                "type": "uint256"
+            }
+        ],
+        "name": "calcWethOutByTornIn",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "_stakeData",
+                "type": "bytes"
+            }
+        ],
+        "name": "calculateLockedProfit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_lockedProfit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lastRewardDistribution",
+                "type": "uint256"
+            }
+        ],
+        "name": "calculateLockedProfit",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "enum PowerIndexRouterInterface.StakeStatus",
+                "name": "_status",
+                "type": "uint8"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeParams",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "performanceFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "performanceFeeReceiver",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IRouterConnector.DistributeData",
+                "name": "_distributeData",
+                "type": "tuple"
+            }
+        ],
+        "name": "claimRewards",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "stakeData",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_accRewardPerTorn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_accRewardRateOnLastUpdate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_reinvestDuration",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lastRewardsUpdate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lockedBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "forecastReward",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_lastClaimRewardsAt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lastChangeStakeAt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_reinvestDuration",
+                "type": "uint256"
+            }
+        ],
+        "name": "getPendingAndForecastReward",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "pending",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "forecast",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "forecastByPending",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getPendingRewards",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getTornPriceRatio",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_gasUsed",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_gasPrice",
+                "type": "uint256"
+            }
+        ],
+        "name": "getTornUsedToReinvest",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getUnderlyingStaked",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "name": "initRouter",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "_claimParams",
+                "type": "bytes"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lastClaimRewardsAt",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lastChangeStakeAt",
+                "type": "uint256"
+            }
+        ],
+        "name": "isClaimAvailable",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "paybackDuration",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "gasToReinvest",
+                "type": "uint256"
+            }
+        ],
+        "name": "packClaimParams",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "lockedProfit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastRewardDistribution",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "performanceFeeDebt",
+                "type": "uint256"
+            }
+        ],
+        "name": "packStakeData",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_accRewardPerTorn",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_accRewardRateOnLastUpdate",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_lockedBalance",
+                "type": "uint256"
+            }
+        ],
+        "name": "pendingReward",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeParams",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "performanceFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "performanceFeeReceiver",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IRouterConnector.DistributeData",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "redeem",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "result",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bool",
+                "name": "claimed",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeData",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "stakeParams",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "performanceFee",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "performanceFeeReceiver",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IRouterConnector.DistributeData",
+                "name": "",
+                "type": "tuple"
+            }
+        ],
+        "name": "stake",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "result",
+                "type": "bytes"
+            },
+            {
+                "internalType": "bool",
+                "name": "claimed",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "_claimParams",
+                "type": "bytes"
+            }
+        ],
+        "name": "unpackClaimParams",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "paybackDuration",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "gasToReinvest",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "_stakeData",
+                "type": "bytes"
+            }
+        ],
+        "name": "unpackStakeData",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "lockedProfit",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lastRewardDistribution",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "performanceFeeDebt",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "pure",
+        "type": "function"
+    }
+]
